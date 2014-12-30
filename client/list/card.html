@@ -1,0 +1,27 @@
+<template name="card">
+  <article id="card-wrapper">
+    <header id="card-caption" class="editable-region">
+      <div class="static-view">
+        <span>{{ name }}</span>
+      </div>
+      <div id="card-menu" class="btn-group">
+        <a class="btn btn-default menu-caption" href="#"><i class="icon-cog"></i> Menu</a>
+        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#" id="add-cli-option"><i class="icon-plus"></i> Checklist items</a></li>
+          <li><a href="#"><i class="icon-group"></i> Members</a></li>
+          <li><a href="#"><i class="icon-tag"></i> Tags</a></li>
+          <li><a href="#"><i class="icon-time"></i> Duedate</a></li>
+          <li><a href="#"><i class="icon-paper-clip"></i> Attachment</a></li>
+          <li><a href="#"><i class="icon-eye-open"></i> Focus</a></li>
+        </ul>
+      </div>
+    </header>
+    <section  id="card-content">
+      <ul class="checklist"></ul>
+    </section>
+    <footer id="card-footer">
+      <i id="closeBtn" class="icon-remove-circle"></i>
+    </footer>
+  </article>
+</template>

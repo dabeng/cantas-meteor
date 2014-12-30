@@ -1,0 +1,28 @@
+<head>
+<link rel="stylesheet" href="css/font-awesome.min.css">
+</head>
+<template name="layout">
+  <div class="wrapper">
+    <div class="header-wrapper">
+      <div class="heading">
+        Cantas based on Meteor
+      </div>
+      <div class="nav-wrapper">
+        <ul id="nav">
+          <li class="nav-item">
+            <a href="/"><i class="icon-th-large"></i>  My Boards</a>
+          </li>
+          <li class="nav-item">
+            <a href="/"><i class="icon-th"></i>  My Cards</a>
+          </li>
+          <li class="nav-item">
+            <a href="/help"><i class="icon-lightbulb"></i> Help</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="content-wrapper">
+      {{> yield }}
+    </div>
+  </div>
+</template>

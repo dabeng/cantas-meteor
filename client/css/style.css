@@ -1,0 +1,376 @@
+
+html,body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height:100%;
+  font-family: Arial;
+  overflow: hidden;
+}
+
+.wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #1A1021;
+}
+
+.heading {
+  color: white;
+  background-color: rgba(168, 120, 120, 0.3);
+}
+
+.header-wrapper {
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  left: 20px;
+  height: 100px;
+}
+
+.header-wrapper .heading {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.nav-wrapper {
+  position: absolute;
+  top: 60px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+}
+#nav {
+  list-style: none;
+  height: 30px;
+  margin: 5px 0 5px 0;
+  padding: 0;
+}
+.nav-item {
+  float:left;
+  margin-right: 5px;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px;
+  width: 150px;
+  height: 30px;
+  color: white;
+  background-color: rgba(168, 120, 120, 0.3);
+}
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.nav-item a {
+  font-weight: bold;
+  color: white;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-item a:link { 
+  text-decoration: none; 
+}
+
+.nav-item a:visited {
+  text-decoration: none; 
+}
+
+.content-wrapper {
+  position: absolute;
+  top: 105px;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  background-color: white;
+}
+
+#boards-wrapper {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  bottom: 10px;
+  left: 20px;
+  overflow-y: auto;
+}
+
+.board-item {
+  width: 200px;
+  height: 200px;
+  margin-top: 20px;
+  margin-right: 20px;
+  float: left;
+  line-height: 200px;
+  text-align: center;
+  background-color: rgba(227, 227, 227, 0.5);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .175);
+}
+
+.board-item a {
+  color: black;
+  font-weight: bold;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+.board-item a:link { 
+  text-decoration: none; 
+}
+
+.board-item a:visited {
+  text-decoration: none; 
+}
+
+.board-item:hover {
+  background-color: rgba(255, 228, 90, 0.3);
+}
+
+.board-item:hover a {
+  color: black;
+}
+
+#board-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #e3e3e3;
+}
+
+#board-caption {
+  height: 30px;
+}
+
+#board-content {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  padding: 10px;
+  background-color: white;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.list-item {
+  width: 300px;
+  height: 100%;
+  float: left;
+  margin-right: 20px;
+  border: 1px solid #dddddd;
+}
+
+.list-caption {
+  height:  25px;
+}
+
+.list-content {
+  height: calc(100% - 45px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.list-footer {
+  height: 20px;
+}
+
+.card-item {
+  height: 80px;
+  max-width: 280px;
+  background-color: rgba(227, 227, 227, 0.5);
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.card-abstract {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  color: black;
+  text-decoration: none;
+}
+
+.card-item:hover {
+  background-color: rgba(255, 228, 90, 0.3);
+}
+
+.card-item:hover a{
+  color: black;
+}
+
+#card-wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+#card-caption {
+  height: 40px;
+  border-bottom: 2px solid #90A830;
+  border-bottom-style: dashed;
+}
+
+#card-caption .static-view {
+  padding: 5px;
+  height: 100%;
+  width: calc(100% - 140px);
+  display: inline-block;
+  float: left;
+}
+
+#card-caption .static-view span:hover {
+  cursor: pointer;
+}
+
+#card-caption .edit-view {
+  padding: 5px;
+  height: 100%;
+  width: calc(100% - 200px);
+  display: inline-block;
+  float: left;
+}
+
+#card-caption .edit-view  textarea{
+  height: 100%;
+  resize: none;
+   width: calc(100% - 170px);
+}
+
+#card-caption .edit-view button {
+  float: right;
+  margin-top: -5px;
+}
+
+#card-menu {
+  float: right;
+  width: 136px;
+}
+
+.btn-default {
+  color: white;
+  background-color: #90A830;
+}
+
+#card-menu .menu-caption {
+  width: calc(100% - 25px); 
+}
+
+.dropdown-menu {
+  min-width: 100px;
+}
+
+.dropdown-menu i {
+  font-size: 18px;
+  color: #90A830;
+}
+
+.dropdown-menu > li > a {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#card-content {
+  width: 100%;
+  height: calc(100% - 50px);
+  overflow-y: auto;
+}
+
+.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+}
+
+.checklistItem {
+  margin-bottom: 10px;
+  background-color: rgba(227, 227, 227, 0.5);
+  padding: 10px 5px 10px 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .175);
+}
+
+.ui-state-highlight {
+  height: 3em;
+  line-height: 1.2em;
+}
+
+.cli-checkbox {
+  height: 30px;
+  width: 30px;
+  float: left;
+  color: #90A830;
+  font-weight: bold;
+  font-size: 18px;
+  transition: font-size 0.3s;
+  -moz-transition: font-size 0.3s;
+  -webkit-transition: font-size 0.3s;
+  -o-transition: font-size 0.3s; 
+}
+
+.cli-checkbox:hover {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.cli-name:hover {
+  cursor: pointer;
+}
+
+.cli-delete {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  margin-right: -10px;
+  float: right;
+  font-size: 18px;
+  color: #90A830;
+  cursor: pointer;
+}
+
+#ta-edit-cli {
+  width: calc(100% - 200px);
+  resize: none;
+}
+
+#btn-cancel-cli {
+  float: right;
+}
+
+#btn-save-cli {
+  float: right
+}
+
+#card-footer {
+  display: none;
+  border-top: 2px solid #90A830;
+  border-top-style: dashed;
+  padding: 10px 20px 10px 10px;
+}
+
+#closeBtn {
+  float: right;
+  margin-top: -11px;
+  margin-right: -20px;
+  color: #90A830;
+  font-size: 20px;
+}
+
+#ta-addCLI {
+  width: calc(100% - 150px);
+  resize: none;
+}
+
+#card-footer button {
+  float: right;
+}

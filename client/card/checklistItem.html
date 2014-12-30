@@ -1,0 +1,9 @@
+<template name="checklistItem">
+  <li class="checklistItem" id="{{ _id }}">
+    <section class="display-cli-wrapper">
+      <i class="{{#if checked}}icon-check{{else}}icon-check-empty{{/if}} cli-checkbox"></i>
+      <span class="cli-name">{{ name }}</span>
+      <i class="icon-trash cli-delete"></i>
+    </section>
+  </li>
+</template>

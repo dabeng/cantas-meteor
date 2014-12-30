@@ -1,0 +1,9 @@
+<template name="boardList">
+  <div id="boards-wrapper">
+    {{#each this}}
+      <article class="board-item">
+        <a href="{{ pathFor 'board' }}"> {{ name }} </a>
+      </article>
+    {{/each}}
+  </div>
+</template>

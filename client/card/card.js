@@ -43,14 +43,7 @@ Template.card.rendered = function() {
     placeholder: 'ui-state-highlight',
     stop: function(event, ui) {
       var cli_order = $sortableCL.sortable('toArray').join(',');
-      // Session.set('card_'+ _this.data._id + '_cliorder', cli_order);
       Cards.update(_this.data._id, { $set: {cli_order: cli_order, moved_cli_id: ui.item[0].id }});
-    },
-    over: function (event, ui) {
-      var a = 100;
-    },
-    change: function (event, ui) {
-      var a = 100;
     }
   })
   .disableSelection();
@@ -59,29 +52,29 @@ Template.card.rendered = function() {
     Meteor.subscribe("current-card-by-id", _this.data._id);
     var cli_order = Cards.findOne(_this.data._id).cli_order;
     var moved_cli_id = Cards.findOne(_this.data._id).moved_cli_id;
+    var $moved_cli_id = $('#' + moved_cli_id);
     if ($sortableCL.children().length) {
       var index = $.inArray(moved_cli_id, cli_order.split(','));
       var length = $sortableCL.children().length;
       if (index === length) {
         if($sortableCL.children().last()[0].id !== moved_cli_id) {
-          $sortableCL.append($('#' + moved_cli_id));
+          $sortableCL.append($moved_cli_id);
         }
       } else if (index === -1) {
-        $('#' + moved_cli_id).remove();
+        $moved_cli_id.remove();
       } else {
         if($sortableCL.children().eq(index)[0].id !== moved_cli_id) {
           if (index > 0) {
             if (index > $('#' + moved_cli_id).index('.checklistItem')) {
-              $('#' + moved_cli_id).insertAfter($sortableCL.children().eq(index));
+              $moved_cli_id.insertAfter($sortableCL.children().eq(index));
             } else {
-              $('#' + moved_cli_id).insertBefore($sortableCL.children().eq(index));
+              $moved_cli_id.insertBefore($sortableCL.children().eq(index));
             }
           } else {
-            $sortableCL.prepend($('#' + moved_cli_id));
+            $sortableCL.prepend($moved_cli_id);
           }
         }
       }
-
     }
   });
 

@@ -14,18 +14,19 @@ Template.checklistItem.events({
       Meteor.subscribe('card-by-id', template.data.cardId._str, function() {
         var card = Cards.findOne({ _id: template.data.cardId });
         var new_cli_order;
-        if (!card.cli_order.length) {
+        var old_cli_order = card.cli_order;
+        if (!old_cli_order.length) {
           new_cli_order = template.data._id;
         } else {
-          if (card.cli_order.indexOf(',') === -1) {
+          if (old_cli_order.indexOf(',') === -1) {
             new_cli_order = '';
-          } else if (card.cli_order.indexOf(template.data._id) === 0) {
-            new_cli_order = card.cli_order.replace(new RegExp(template.data._id + ','), '');
+          } else if (old_cli_order.indexOf(template.data._id) === 0) {
+            new_cli_order = old_cli_order.replace(new RegExp(template.data._id + ','), '');
           } else {
-            new_cli_order = card.cli_order.replace(new RegExp(',' + template.data._id), '');
+            new_cli_order = old_cli_order.replace(new RegExp(',' + template.data._id), '');
           }
         }
-        Cards.update(template.data.cardId, { $set: {cli_order: new_cli_order, moved_cli_id:  template.data._id }});
+        Cards.update(template.data.cardId, { $set: {cli_order: new_cli_order, moved_cli_id: template.data._id }});
       });
     });
   }

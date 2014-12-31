@@ -16,6 +16,18 @@ Meteor.publish('lists', function () {
   return Lists.find();
 });
 
+Meteor.publish('current-board-by-id', function (_id) {
+  var _this = this;
+
+  Boards.find({ _id: _id }).observeChanges({
+    changed: function (id, fields) {
+      if(fields.list_order) {
+        _this.changed('boards', _id, { list_order: fields.list_order, moved_list_id: fields.moved_list_id });
+      }
+    }
+  });
+});
+
 Meteor.publish('cards', function () {
   return Cards.find();
 });

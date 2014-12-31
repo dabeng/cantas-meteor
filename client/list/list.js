@@ -4,7 +4,7 @@ Template.list.rendered = function() {
   var _this = this;
   Meteor.subscribe('cards', function() {
     var data = function() {
-      var cards = Cards.find({ listId: _this.data._id });
+      var cards = Cards.find({ listId: new Meteor.Collection.ObjectID(_this.data._id) });
       var clearifyId = function (doc) {
         doc._id = doc._id._str;
         return doc;

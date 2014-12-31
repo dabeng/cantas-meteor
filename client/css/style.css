@@ -181,11 +181,6 @@ html,body {
   background-color: white;
 }
 
-#board-content .ui-state-highlight {
-  width: 300px;
-  height: 100%;
-}
-
 .list-caption {
   height:  25px;
 }

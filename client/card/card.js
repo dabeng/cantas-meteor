@@ -64,7 +64,7 @@ Template.card.rendered = function() {
     var currentCard = Cards.findOne(cardId);
     var moved_cli_id = currentCard.moved_cli_id;
     var $moved_cli_id = $('#' + moved_cli_id);
-    var $clItems = $sortableCL.children();
+    var $clItems = $sortableCL.children('checklistItem');
     var index = $.inArray(moved_cli_id, currentCard.cli_order.split(','));
     // if checklist items of current client is empty, there is no need to ajust order for other client
     if ($clItems.length) {

@@ -164,12 +164,26 @@ html,body {
   overflow-y: hidden;
 }
 
+.list-placeholder {
+  width: 300px;
+  height: 100%;
+  float: left;
+  margin-right: 20px;
+  background-color: rgba(255, 228, 90, 0.3);
+}
+
 .list-item {
   width: 300px;
   height: 100%;
   float: left;
   margin-right: 20px;
   border: 1px solid #dddddd;
+  background-color: white;
+}
+
+#board-content .ui-state-highlight {
+  width: 300px;
+  height: 100%;
 }
 
 .list-caption {
@@ -300,7 +314,7 @@ html,body {
   box-shadow: 0 1px 2px rgba(0, 0, 0, .175);
 }
 
-.ui-state-highlight {
+#card-content .ui-state-highlight {
   height: 3em;
   line-height: 1.2em;
 }

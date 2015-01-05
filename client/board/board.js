@@ -93,7 +93,7 @@ var finishEditBoardName = function(event, template) {
 
 Template.board.events({
   'click #board-caption .static-view span': function(event, template) {
-    template.$('.static-view').hide().siblings('.edit-view').show();
+    template.$('#board-caption .static-view').hide().siblings('.edit-view').show();
     template.$('#board-caption .edit-view textarea').val(event.target.textContent).select();
   },
   'mousedown #board-caption .edit-view .btn-save': function(event, template) {

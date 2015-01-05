@@ -1,6 +1,19 @@
 <template name="list">
   <article class="list-item" id="{{ _id }}">	
-    <header class="list-caption">{{ name }}</header>
+    <header class="list-caption editable-region">
+      <div class="static-view">
+        <span>{{ name }}</span>
+      </div>
+      <div class="edit-view">
+        <textarea type="text" placeholder="Please type list name"></textarea>
+        <button type="button" class="btn btn-xs btn-default btn-cacel">
+          <i class="icon-remove"></i> Cancel
+        </button>
+        <button type="button" class="btn btn-xs btn-default btn-save">
+          <i class="icon-save"></i> Save
+        </button>
+      </div>
+    </header>
     <section class="list-content"></section>
     <footer class="list-footer">
       <a calss="add-card">Add a card</a>

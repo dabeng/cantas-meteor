@@ -50,14 +50,15 @@ Template.list.rendered = function() {
       var end_card_order = $endList.find('.list-content').sortable('toArray').join(',');
       var endListId = new Meteor.Collection.ObjectID($endList[0].id);
       Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }});
+      // if you move the card into the other list
       if ($beginList[0].id !== $endList[0].id) {
-        //
+        // update the current card's listId field
         var sCardId = ui.item[0].id;
         var cardId = new Meteor.Collection.ObjectID(sCardId);
         Meteor.subscribe('card-by-id', sCardId);
         var card = Cards.findOne({ _id: cardId });
         Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) } });
-        //
+        // update the card_order field of the card's original list
         var begin_card_order = $beginList.find('.list-content').sortable('toArray').join(',');
         var beginListId = new Meteor.Collection.ObjectID($beginList[0].id);
         Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }});
@@ -95,3 +96,21 @@ Template.list.rendered = function() {
 
 
 };
+
+var finishEditListName = function(event, template) {
+  $(event.target).closest('.editable-region')
+    .find('.edit-view').hide()
+    .siblings('.static-view').show();
+};
+
+Template.list.events({
+  'click .list-caption .static-view span': function(event, template) {
+    template.$('.list-caption .static-view').hide().siblings('.edit-view').show();
+    template.$('.list-caption .edit-view textarea').val(event.target.textContent).select();
+  },
+  'blur .list-caption .edit-view textarea': finishEditListName,
+  'mousedown .list-caption .edit-view .btn-save': function(event, template) {
+    var listId = new Meteor.Collection.ObjectID(this._id);
+    Lists.update(listId, {$set: { name: template.$('.list-caption .edit-view textarea').val().trim() }});
+  }
+});

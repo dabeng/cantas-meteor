@@ -153,6 +153,10 @@ html,body {
   border-bottom-style: dashed;
 }
 
+#board-caption .static-view span:hover {
+  cursor: pointer;
+}
+
 #board-caption .edit-view {
   padding: 5px;
   height: 100%;
@@ -224,7 +228,34 @@ html,body {
 }
 
 .list-caption {
-  height:  25px;
+  height:  36px;
+}
+
+.list-caption .static-view {
+  padding: 2px;
+  height: 100%;
+  width: 100%;
+}
+
+.list-caption .static-view span:hover {
+  cursor: pointer;
+}
+
+.list-caption .edit-view {
+  padding: 2px;
+  height: 100%;
+  width: 100%;
+  float: left;
+}
+
+.list-caption .edit-view  textarea{
+  height: 100%;
+  resize: none;
+  width: calc(100% - 130px);
+}
+
+.list-caption .edit-view button {
+  float: right;
 }
 
 .list-content {

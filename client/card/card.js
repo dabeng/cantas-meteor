@@ -88,6 +88,7 @@ Template.card.rendered = function() {
       }
     }
   });
+
 };
 
 Template.card.events({
@@ -101,7 +102,7 @@ Template.card.events({
     var $cardFooter = $('#card-footer');
     var $cardContent = $('#card-content');
     if ($cardFooter.is(':hidden')) {
-      if(!$('#text-addCLI').length) {
+      if(!$('#ta-addCLI').length) {
         Blaze.renderWithData(Template.addChecklistItem, {cardId: this._id}, $cardFooter[0]);
       }
       var footerHeight = 50;
@@ -113,21 +114,20 @@ Template.card.events({
   'click .cli-delete': function (event, template) {
     ChecklistItems.remove(this._id);
   },
-  'mouseenter #closeBtn': function(evnet) {
+  'mouseenter .close-btn': function(evnet) {
     $(evnet.target).removeClass('icon-remove-circle').addClass('icon-remove-sign');
   },
-  'mouseleave #closeBtn': function(evnet) {
+  'mouseleave .close-btn': function(evnet) {
     $(evnet.target).removeClass('icon-remove-sign').addClass('icon-remove-circle');
   },
-  'click #closeBtn': function(evnet, template) {
+  'click .close-btn': function(evnet, template) {
     var $cardFooter = $('#card-footer');
     var $cardContent = $('#card-content');
     var footerHeight = 50;
-    var contentHeight  =  $('#card-content').height();
+    var contentHeight = $('#card-content').height();
     $cardContent.animate({ height: contentHeight + footerHeight }, 300);
-    $cardFooter.children().not('#closeBtn').animate({ height: 0 }, 300, function() {
+    $cardFooter.animate({ height: 0 }, 300, function() {
       $(this).hide();
     });
-    $cardFooter.hide();
   }
 });

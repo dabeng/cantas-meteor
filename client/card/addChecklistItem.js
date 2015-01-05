@@ -1,4 +1,3 @@
-
 Template.addChecklistItem.events({
   'click #btn-addCLI': function (event, template) {
     var newCLI = template.find('textarea');

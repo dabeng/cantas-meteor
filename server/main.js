@@ -16,6 +16,22 @@ Meteor.publish('lists', function () {
   return Lists.find();
 });
 
+Meteor.publish('list-by-id', function (s_id) {
+  return Lists.find({ _id: new Meteor.Collection.ObjectID(s_id) });
+});
+
+Meteor.publish('current-list-by-id', function (_id) {
+  var _this = this;
+
+  Lists.find({ _id: _id }).observeChanges({
+    changed: function (id, fields) {
+      if(fields.list_order) {
+        _this.changed('lists', _id, { card_order: fields.card_order, moved_card_id: fields.moved_card_id });
+      }
+    }
+  });
+});
+
 Meteor.publish('current-board-by-id', function (_id) {
   var _this = this;
 

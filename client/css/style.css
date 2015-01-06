@@ -259,13 +259,48 @@ html,body {
 }
 
 .list-content {
-  height: calc(100% - 45px);
+  height: calc(100% - 56px);
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .list-footer {
   height: 20px;
+}
+
+.list-footer .static-view {
+  padding: 2px;
+  height: 100%;
+  width: 100%;
+}
+
+.list-footer .static-view span {
+  float: right;
+  color: #90A830;
+  font-weight: bold;
+}
+
+.list-footer .static-view span:hover {
+  cursor: pointer;
+}
+
+.list-footer .edit-view {
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  margin-top: 5px;
+  border-top: 2px solid #90A830;
+  border-top-style: dashed;
+}
+
+.list-footer .edit-view  textarea{
+  height: 60px;
+  resize: none;
+  width: 100%;
+}
+
+.list-footer .edit-view button {
+  float: right;
 }
 
 .card-item {

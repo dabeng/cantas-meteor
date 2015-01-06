@@ -103,6 +103,18 @@ var finishEditListName = function(event, template) {
     .siblings('.static-view').show();
 };
 
+var finishAddCard = function(event, template) {
+      var increment = 90;
+      var $listFooter = template.$('.list-footer');
+      var $listContent = template.$('.list-content');
+      var footerHeight = $listFooter.height();
+      var contentHeight = $listContent.height();
+      $listContent.animate({ height: contentHeight + increment }, 200);
+      $listFooter.animate({ height: footerHeight - increment }, 200, function() {
+        template.$('.list-footer .edit-view').hide().siblings('.static-view').show();
+      });
+};
+
 Template.list.events({
   'click .list-caption .static-view span': function(event, template) {
     template.$('.list-caption .static-view').hide().siblings('.edit-view').show();
@@ -112,5 +124,40 @@ Template.list.events({
   'mousedown .list-caption .edit-view .btn-save': function(event, template) {
     var listId = new Meteor.Collection.ObjectID(this._id);
     Lists.update(listId, {$set: { name: template.$('.list-caption .edit-view textarea').val().trim() }});
+  },
+  'click .list-footer .static-view span': function(event, template) {
+    var $listFooter = template.$('.list-footer');
+    var $listContent = template.$('.list-content');
+    if ($listFooter.find('.edit-view').is(':hidden')) {
+      var increment = 90;
+      var footerHeight = $listFooter.height();
+      var contentHeight  =  $listContent.height();
+      $listContent.animate({ height: contentHeight - increment }, 200);
+      $listFooter.animate({ height: footerHeight + increment}, 200, function() {
+        template.$('.list-footer .static-view').hide().siblings('.edit-view').show();
+        template.$('.list-footer .edit-view textarea').focus();
+      });
+    }
+  },
+  'blur .list-footer textarea': finishAddCard,
+  'mousedown .list-footer .btn-save': function(event, template) {
+    var _this = this;
+    var listId = new Meteor.Collection.ObjectID(this._id);
+    Cards.insert({
+      _id: new Meteor.Collection.ObjectID(),
+      name: template.$('.list-footer textarea').val().trim(),
+      listId: listId,
+      boardId: this.boardId
+    }, function(error, _id) {
+      if (error) {
+        // TODO: exception handling
+      } else {
+        Meteor.subscribe('list-by-id', _this._id, function() {
+          var list = Lists.findOne({ _id: listId });
+          var new_card_order = list.card_order === '' ? _id._str : list.card_order + ',' +_id._str;
+          Lists.update(listId, { $set: {card_order: new_card_order, moved_card_id: _id._str }});
+        });
+      }
+    });
   }
 });

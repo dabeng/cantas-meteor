@@ -44,9 +44,7 @@ Template.board.rendered = function() {
 
 
   var $sortableList = $('#board-content').sortable({
-    axis: 'x',
     placeholder: 'list-placeholder',
-    tolerance: 'pointer',
     stop: function(event, ui) {
       var list_order = $sortableList.sortable('toArray').join(',');
       Boards.update(boardId, { $set: {list_order: list_order, moved_list_id: ui.item[0].id }});

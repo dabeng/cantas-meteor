@@ -215,7 +215,7 @@ html,body {
 .list-placeholder {
   width: 300px;
   height: 100%;
-  float: left;
+  display:inline-block;
   margin-right: 20px;
   background-color: rgba(255, 228, 90, 0.8);
 }

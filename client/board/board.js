@@ -14,26 +14,30 @@ Template.board.rendered = function() {
       var newLists = lists.map(clearifyId);
       Meteor.subscribe('board-by-id', boardId._str);
       var board = Boards.findOne({ _id: boardId });
-      var listIds = board.list_order.split(',');
-      var finalLists = new Array(listIds.length);
-      newLists.forEach(function(item) {
-        var index = $.inArray(item._id, listIds);
-        if (index > -1) {
-          finalLists[index] = item;
-        } else {
-          finalLists[finalLists.length - 1] = item;
-        }
-      });
-      if (newLists.length === listIds.length - 1) {
-        for (var i=0; i< newLists.length; i++) {
-          if (!finalLists[i]) {
-            break;
+      if (board.list_order) {
+        var listIds = board.list_order.split(',');
+        var finalLists = new Array(listIds.length);
+        newLists.forEach(function(item) {
+          var index = $.inArray(item._id, listIds);
+          if (index > -1) {
+            finalLists[index] = item;
+          } else {
+            finalLists[finalLists.length - 1] = item;
           }
+        });
+        if (newLists.length === listIds.length - 1) {
+          for (var i=0; i< newLists.length; i++) {
+            if (!finalLists[i]) {
+              break;
+            }
+          }
+          finalLists.splice(i, 1);
         }
-        finalLists.splice(i, 1);
-      }
 
-      return finalLists;
+        return finalLists;
+      } else {
+        return newLists;
+      }
     };
     var tmpl = function() {
       return Template.list;
@@ -56,6 +60,7 @@ Template.board.rendered = function() {
   Tracker.autorun(function () {
     Meteor.subscribe('current-board-by-id', boardId);
     var currentBoard = Boards.findOne(boardId);
+    if (currentBoard && currentBoard.moved_list_id) {
     var moved_list_id = currentBoard.moved_list_id;
     var $moved_list_id = $('#' + moved_list_id);
     // note: here, we need to exclude placeholder element for the normal order
@@ -78,6 +83,7 @@ Template.board.rendered = function() {
         }
       }
     }
+  } 
   });
 
 

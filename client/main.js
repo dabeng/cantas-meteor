@@ -50,3 +50,13 @@ Router.map(function () {
 
 });
 
+Router.route('/new/board', function () {
+  var _this = this;
+  Boards.insert({ name: 'One Board', _id: new Meteor.Collection.ObjectID() }, function(error, _id) {
+    if (error) {
+       // exception handling
+      } else {
+         _this.redirect('/board/' + _id._str);  
+      }
+    });
+});s

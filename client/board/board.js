@@ -61,29 +61,29 @@ Template.board.rendered = function() {
     Meteor.subscribe('current-board-by-id', boardId);
     var currentBoard = Boards.findOne(boardId);
     if (currentBoard && currentBoard.moved_list_id) {
-    var moved_list_id = currentBoard.moved_list_id;
-    var $moved_list_id = $('#' + moved_list_id);
-    // note: here, we need to exclude placeholder element for the normal order
-    var $lists = $sortableList.children('.list-item');
-    var index = $.inArray(moved_list_id, currentBoard.list_order.split(','));
-    if ($lists.length) {
-      if (index === $lists.length) {
-        if ($lists.last()[0].id !== moved_list_id) {
-          $sortableList.append($moved_list_id);
-        }
-      } else if (index === -1) {
-        $moved_list_id.remove();
-      } else {
-        if($lists.eq(index)[0].id !== moved_list_id) {
-          if (index > $moved_list_id.index('.checklistItem')) {
-            $moved_list_id.insertAfter($lists.eq(index));
-          } else {
-            $moved_list_id.insertBefore($lists.eq(index));
+      var moved_list_id = currentBoard.moved_list_id;
+      var $moved_list_id = $('#' + moved_list_id);
+      // note: here, we need to exclude placeholder element for the normal order
+      var $lists = $sortableList.children('.list-item');
+      var index = $.inArray(moved_list_id, currentBoard.list_order.split(','));
+      if ($lists.length) {
+        if (index === $lists.length) {
+          if ($lists.last()[0].id !== moved_list_id) {
+            $sortableList.append($moved_list_id);
+          }
+        } else if (index === -1) {
+          $moved_list_id.remove();
+        } else {
+          if($lists.eq(index)[0].id !== moved_list_id) {
+            if (index > $moved_list_id.index('.checklistItem')) {
+              $moved_list_id.insertAfter($lists.eq(index));
+            } else {
+              $moved_list_id.insertBefore($lists.eq(index));
+            }
           }
         }
       }
-    }
-  } 
+    } 
   });
 
 

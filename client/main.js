@@ -59,4 +59,4 @@ Router.route('/new/board', function () {
          _this.redirect('/board/' + _id._str);  
       }
     });
-});s
+});

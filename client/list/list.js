@@ -14,26 +14,30 @@ Template.list.rendered = function() {
       var newCards = cards.map(clearifyId);
       Meteor.subscribe('list-by-id', listId._str);
       var list = Lists.findOne({ _id: listId });
-      var cardIds = list.card_order.split(',');
-      var finalCards = new Array(cardIds.length);
-      newCards.forEach(function(item) {
-        var index = $.inArray(item._id, cardIds);
-        if (index > -1) {
-          finalCards[index] = item;
-        } else {
-          finalCards[finalCards.length - 1] = item;
-        }
-      });
-      if (newCards.length === cardIds.length - 1) {
-        for (var i=0; i< newCards.length; i++) {
-          if (!finalCards[i]) {
-            break;
+      if (list.card_order) {
+        var cardIds = list.card_order.split(',');
+        var finalCards = new Array(cardIds.length);
+        newCards.forEach(function(item) {
+          var index = $.inArray(item._id, cardIds);
+          if (index > -1) {
+            finalCards[index] = item;
+          } else {
+            finalCards[finalCards.length - 1] = item;
           }
+        });
+        if (newCards.length === cardIds.length - 1) {
+          for (var i=0; i< newCards.length; i++) {
+            if (!finalCards[i]) {
+              break;
+            }
+          }
+          finalCards.splice(i, 1);
         }
-        finalCards.splice(i, 1);
-      }
 
-      return finalCards;
+        return finalCards;
+      } else {
+        return newCards;
+      }
     };
     var tmpl = function() {
       return Template.cardItem;
@@ -71,23 +75,25 @@ Template.list.rendered = function() {
   Tracker.autorun(function () {
     Meteor.subscribe('current-list-by-id', listId);
     var currentList = Lists.findOne(listId);
-    var moved_card_id = currentList.moved_card_id;
-    var $moved_card_id = $('#' + moved_card_id);
-    var $cardItems = $sortableCard.children('card-item');
-    var index = $.inArray(moved_card_id, currentList.card_order.split(','));
-    if ($cardItems.length) {
-      if (index === $cardItems.length) {
-        if ($cardItems.last()[0].id !== moved_card_id) {
-          $sortableCard.append($moved_card_id);
-        }
-      } else if (index === -1) {
-        $moved_card_id.remove();
-      } else {
-        if($cardItems.eq(index)[0].id !== moved_card_id) {
-          if (index > $moved_card_id.index('.card-item')) {
-            $moved_card_id.insertAfter($cardItems.eq(index));
-          } else {
-            $moved_card_id.insertBefore($cardItems.eq(index));
+    if (currentList.moved_card_id) {
+      var moved_card_id = currentList.moved_card_id;
+      var $moved_card_id = $('#' + moved_card_id);
+      var $cardItems = $sortableCard.children('.card-item');
+      var index = $.inArray(moved_card_id, currentList.card_order.split(','));
+      if ($cardItems.length) {
+        if (index === $cardItems.length) {
+          if ($cardItems.last()[0].id !== moved_card_id) {
+            $sortableCard.append($moved_card_id);
+          }
+        } else if (index === -1) {
+          $moved_card_id.remove();
+        } else {
+          if($cardItems.eq(index)[0].id !== moved_card_id) {
+            if (index > $moved_card_id.index('.card-item')) {
+              $moved_card_id.insertAfter($cardItems.eq(index));
+            } else {
+              $moved_card_id.insertBefore($cardItems.eq(index));
+            }
           }
         }
       }
@@ -154,7 +160,7 @@ Template.list.events({
       } else {
         Meteor.subscribe('list-by-id', _this._id, function() {
           var list = Lists.findOne({ _id: listId });
-          var new_card_order = list.card_order === '' ? _id._str : list.card_order + ',' +_id._str;
+          var new_card_order = !!(list.card_order) ? list.card_order + ',' +_id._str : _id._str;
           Lists.update(listId, { $set: {card_order: new_card_order, moved_card_id: _id._str }});
         });
       }

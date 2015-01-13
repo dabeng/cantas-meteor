@@ -15,32 +15,36 @@ Template.card.rendered = function() {
       var newClItems = clItems.map(clearifyId);
       Meteor.subscribe('card-by-id', cardId._str);
       var card = Cards.findOne({ _id: cardId });
-      var clItemIds = card.cli_order.split(',');
-      var finalClItems = new Array(clItemIds.length);
-      newClItems.forEach(function(item) {
-        var index = $.inArray(item._id, clItemIds);
-        if (index > -1) {
-          finalClItems[index] = item;
-        } else {
-          // because checklistItem collection updating is priority to card collection(fields: cli_order
-          // and moved_cli_id) updating, if index === -1, then we just now insert a new checklist item
-          // into checklistItem collection while, at this point, card collection hasn't been updated 
-          // correspondingly. So we need to put it in the end.
-          finalClItems[finalClItems.length - 1] = item;
-        }
-      });
-      // if newClItems is smaller than clItemIds, is says that we just now delete one checklist item
-      // from checklistItem collection. We need to remove one meaningless null value from finalClItems.
-      if (newClItems.length === clItemIds.length - 1) {
-        for (var i=0; i< newClItems.length; i++) {
-          if (!finalClItems[i]) {
-            break;
+      if (card.cli_order) {
+        var clItemIds = card.cli_order.split(',');
+        var finalClItems = new Array(clItemIds.length);
+        newClItems.forEach(function(item) {
+          var index = $.inArray(item._id, clItemIds);
+          if (index > -1) {
+            finalClItems[index] = item;
+          } else {
+            // because checklistItem collection updating is priority to card collection(fields: cli_order
+            // and moved_cli_id) updating, if index === -1, then we just now insert a new checklist item
+            // into checklistItem collection while, at this point, card collection hasn't been updated 
+            // correspondingly. So we need to put it in the end.
+            finalClItems[finalClItems.length - 1] = item;
           }
+        });
+        // if newClItems is smaller than clItemIds, is says that we just now delete one checklist item
+        // from checklistItem collection. We need to remove one meaningless null value from finalClItems.
+        if (newClItems.length === clItemIds.length - 1) {
+          for (var i=0; i< newClItems.length; i++) {
+            if (!finalClItems[i]) {
+              break;
+            }
+          }
+          finalClItems.splice(i, 1);
         }
-        finalClItems.splice(i, 1);
-      }
 
-      return finalClItems;
+        return finalClItems;
+      } else {
+        return newClItems;
+      }
     };
     var tmpl = function() {
       return Template.checklistItem;
@@ -62,27 +66,29 @@ Template.card.rendered = function() {
   Tracker.autorun(function () {
     Meteor.subscribe('current-card-by-id', cardId);
     var currentCard = Cards.findOne(cardId);
-    var moved_cli_id = currentCard.moved_cli_id;
-    var $moved_cli_id = $('#' + moved_cli_id);
-    var $clItems = $sortableCL.children('checklistItem');
-    var index = $.inArray(moved_cli_id, currentCard.cli_order.split(','));
-    // if checklist items of current client is empty, there is no need to ajust order for other client
-    if ($clItems.length) {
-      // insert a new checklist item
-      if (index === $clItems.length) {
-        // juse need to resort checklist item in non-current client, because
-        // cheklist item is in order already.
-        if ($clItems.last()[0].id !== moved_cli_id) {
-          $sortableCL.append($moved_cli_id);
-        }
-      } else if (index === -1) { // delete the checklist item with id moved_cli_id
-        $moved_cli_id.remove();
-      } else { // just drag and drop existing checklist items in current card
-        if($clItems.eq(index)[0].id !== moved_cli_id) {
-          if (index > $moved_cli_id.index('.checklistItem')) {
-            $moved_cli_id.insertAfter($clItems.eq(index));
-          } else {
-            $moved_cli_id.insertBefore($clItems.eq(index));
+    if (currentCard && currentCard.moved_cli_id) {
+      var moved_cli_id = currentCard.moved_cli_id;
+      var $moved_cli_id = $('#' + moved_cli_id);
+      var $clItems = $sortableCL.children('checklistItem');
+      var index = $.inArray(moved_cli_id, currentCard.cli_order.split(','));
+      // if checklist items of current client is empty, there is no need to ajust order for other client
+      if ($clItems.length) {
+        // insert a new checklist item
+        if (index === $clItems.length) {
+          // juse need to resort checklist item in non-current client, because
+          // cheklist item is in order already.
+          if ($clItems.last()[0].id !== moved_cli_id) {
+            $sortableCL.append($moved_cli_id);
+          }
+        } else if (index === -1) { // delete the checklist item with id moved_cli_id
+          $moved_cli_id.remove();
+        } else { // just drag and drop existing checklist items in current card
+          if($clItems.eq(index)[0].id !== moved_cli_id) {
+            if (index > $moved_cli_id.index('.checklistItem')) {
+              $moved_cli_id.insertAfter($clItems.eq(index));
+            } else {
+              $moved_cli_id.insertBefore($clItems.eq(index));
+            }
           }
         }
       }

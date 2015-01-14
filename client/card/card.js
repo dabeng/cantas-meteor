@@ -121,10 +121,10 @@ Template.card.events({
     ChecklistItems.remove(this._id);
   },
   'mouseenter .close-btn': function(evnet) {
-    $(evnet.target).removeClass('icon-remove-circle').addClass('icon-remove-sign');
+    $(evnet.target).removeClass('fa-times-circle').addClass('fa-times-circle-o');
   },
   'mouseleave .close-btn': function(evnet) {
-    $(evnet.target).removeClass('icon-remove-sign').addClass('icon-remove-circle');
+    $(evnet.target).removeClass('fa-times-circle-o').addClass('fa-times-circle');
   },
   'click .close-btn': function(evnet, template) {
     var $cardFooter = $('#card-footer');

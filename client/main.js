@@ -14,6 +14,7 @@ Router.map(function () {
       }
       return boards.map(clearifyId);
     },
+    loadingTemplate: 'loading',
     waitOn: function () {
       return Meteor.subscribe('boards');
     },

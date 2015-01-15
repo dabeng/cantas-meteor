@@ -149,22 +149,26 @@ Template.list.events({
   'blur .list-footer textarea': finishAddCard,
   'mousedown .list-footer .btn-save': function(event, template) {
     var _this = this;
-    var listId = new Meteor.Collection.ObjectID(this._id);
-    Cards.insert({
-      _id: new Meteor.Collection.ObjectID(),
-      name: template.$('.list-footer textarea').val().trim(),
-      listId: listId,
-      boardId: this.boardId
-    }, function(error, _id) {
-      if (error) {
-        // TODO: exception handling
-      } else {
-        Meteor.subscribe('list-by-id', _this._id, function() {
-          var list = Lists.findOne({ _id: listId });
-          var new_card_order = !!(list.card_order) ? list.card_order + ',' +_id._str : _id._str;
-          Lists.update(listId, { $set: {card_order: new_card_order, moved_card_id: _id._str }});
-        });
-      }
-    });
+    var newCard = template.find('.list-footer textarea');
+    if (newCard.value.trim().length) {
+      var listId = new Meteor.Collection.ObjectID(this._id);
+      Cards.insert({
+        _id: new Meteor.Collection.ObjectID(),
+        name: newCard.value.trim(),
+        listId: listId,
+        boardId: this.boardId
+      }, function(error, _id) {
+        if (error) {
+          // TODO: exception handling
+        } else {
+          Meteor.subscribe('list-by-id', _this._id, function() {
+            var list = Lists.findOne({ _id: listId });
+            var new_card_order = !!(list.card_order) ? list.card_order + ',' +_id._str : _id._str;
+            Lists.update(listId, { $set: {card_order: new_card_order, moved_card_id: _id._str }});
+          });
+        }
+      });
+      newCard.value = '';
+    }
   }
 });

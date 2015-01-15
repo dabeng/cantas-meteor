@@ -1,9 +1,20 @@
 <template name="checklistItem">
-  <li class="checklistItem" id="{{ _id }}">
-    <section class="display-cli-wrapper">
+  <li class="checklistItem editable-region" id="{{ _id }}">
+    <div class="static-view">
       <i class="fa {{#if checked}}fa-check-square-o{{else}}fa-square-o{{/if}} cli-checkbox"></i>
       <span class="cli-name">{{ name }}</span>
       <i class="fa fa-trash cli-delete"></i>
-    </section>
+    </div>
+    <div class="edit-view">
+      <span class="cli-new-name">
+        <textarea type="text" placeholder="Please type checklist item">{{ name }}</textarea>
+      </span>
+      <button type="button" class="btn btn-default btn-cancel">
+      <i class="fa fa-remove"></i>  Cancel
+      </button>
+      <button type="button" class="btn btn-default btn-save">
+        <i class="fa fa-save"></i> Save
+      </button>
+    </div>
   </li>
 </template>

@@ -1,14 +1,24 @@
 
+var finishEditCLI = function(event, template) {
+  $(event.target).closest('.editable-region')
+    .find('.edit-view').hide()
+    .siblings('.static-view').show();
+};
+
 Template.checklistItem.events({
   'click .cli-checkbox': function (event, template) {
     ChecklistItems.update(new Meteor.Collection.ObjectID(this._id), {$set: {checked: ! this.checked}});
   },
   'click .cli-name': function (event, template) {
-    $cliName = $(event.target);
-    template.$('.display-cli-wrapper').hide();
-    Blaze.renderWithData(Template.editChecklistItem, { cliId: this._id, name: $cliName.text() },
-      template.$('.checklistItem')[0]);
+    template.$('.static-view').hide().siblings('.edit-view').show();
+    template.$('.edit-view textarea').val(event.target.textContent).select();
   },
+  'mousedown .edit-view .btn-save': function(event, template) {
+    ChecklistItems.update(new Meteor.Collection.ObjectID(this._id),
+      {$set: { name: template.$('.edit-view textarea').val().trim() }}
+    );
+  },
+  'blur .edit-view textarea': finishEditCLI,
   'click .cli-delete': function (event, template) {
     ChecklistItems.remove(new Meteor.Collection.ObjectID(this._id), function(error, _id) {
       Meteor.subscribe('card-by-id', template.data.cardId._str, function() {

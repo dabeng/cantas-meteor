@@ -477,17 +477,12 @@ html,body {
   cursor: pointer;
 }
 
-#ta-edit-cli {
+.checklistItem .edit-view textarea {
   width: calc(100% - 200px);
   resize: none;
 }
-
-#btn-cancel-cli {
+.checklistItem .edit-view .btn {
   float: right;
-}
-
-#btn-save-cli {
-  float: right
 }
 
 #card-footer {

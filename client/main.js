@@ -18,10 +18,6 @@ Router.map(function () {
     waitOn: function () {
       return Meteor.subscribe('boards');
     },
-    onBeforeAction: function () {
-      $('.loading').find('i').css({'font-size': '120px', 'margin-top': '15%' });
-      this.next();
-    },
     action: function () {
       this.render('boardList');
     }

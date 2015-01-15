@@ -2,8 +2,8 @@ Cards = new Meteor.Collection('cards');
 
 Template.list.rendered = function() {
   var _this = this;
-  var strListId = _this.data._id;
-  var listId = new Meteor.Collection.ObjectID(strListId);
+  var sListId = _this.data._id;
+  var listId = new Meteor.Collection.ObjectID(sListId);
   Meteor.subscribe('cards', function() {
     var data = function() {
       var cards = Cards.find({ listId: listId });
@@ -79,12 +79,12 @@ Template.list.rendered = function() {
     if (currentList.moved_card_id) {
       var moved_card_id = currentList.moved_card_id;
       var $moved_card_id = $('#' + moved_card_id);
-      var $cardItems = $sortableCard.children('.card-item');
+      var $cardItems = $('#' + sListId).find('.card-item');
       var index = $.inArray(moved_card_id, currentList.card_order.split(','));
       if ($cardItems.length) {
         if (index === $cardItems.length) {
           if ($cardItems.last()[0].id !== moved_card_id) {
-            $sortableCard.append($moved_card_id);
+            $('#' + sListId).find('.list-content').append($moved_card_id);
           }
         } else if (index === -1) {
           $moved_card_id.remove();

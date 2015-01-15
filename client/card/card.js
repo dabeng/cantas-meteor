@@ -97,13 +97,21 @@ Template.card.rendered = function() {
 
 };
 
+var finishEditCardName = function(event, template) {
+  $(event.target).closest('.editable-region')
+    .find('.edit-view').hide()
+    .siblings('.static-view').show();
+};
+
 Template.card.events({
   'click #card-caption .static-view span': function(event, template) {
-    $cardContent = $(event.target);
-    template.$('.static-view').hide();
-    Blaze.renderWithData(Template.editCardName, { cardId: this._id, name: $cardContent.text() },
-      template.$('#card-caption')[0]);
+    template.$('#card-caption .static-view').hide().siblings('.edit-view').show();
+    template.$('#card-caption .edit-view textarea').val(event.target.textContent).select();
   },
+  'mousedown #card-caption .edit-view .btn-save': function(event, template) {
+    Cards.update(this._id, {$set: { name: template.$('#card-caption .edit-view textarea').val().trim() }});
+  },
+  'blur #card-caption .edit-view textarea': finishEditCardName,
   'click #add-cli-option': function (event, template) {
     var $cardFooter = $('#card-footer');
     var $cardContent = $('#card-content');

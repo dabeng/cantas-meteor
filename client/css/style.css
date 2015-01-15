@@ -374,7 +374,6 @@ html,body {
   padding: 5px;
   height: 100%;
   width: calc(100% - 200px);
-  display: inline-block;
   float: left;
 }
 

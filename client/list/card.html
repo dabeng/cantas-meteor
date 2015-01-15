@@ -4,6 +4,15 @@
       <div class="static-view">
         <span>{{ name }}</span>
       </div>
+      <div class="edit-view">
+        <textarea type="text" placeholder="Please type card name">{{ name }}</textarea>
+        <button type="button" class="btn btn-default btn-cacel">
+          <i class="fa fa-remove"></i>  Cancel
+        </button>
+        <button type="button" class="btn btn-default btn-save">
+          <i class="fa fa-save"></i> Save
+        </button>
+      </div>
       <div id="card-menu" class="btn-group">
         <a class="btn btn-default menu-caption" href="#"><i class="fa fa-cog"></i> Menu</a>
         <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa fa-sort-desc"></span></a>

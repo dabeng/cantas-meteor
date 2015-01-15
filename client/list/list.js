@@ -2,7 +2,8 @@ Cards = new Meteor.Collection('cards');
 
 Template.list.rendered = function() {
   var _this = this;
-  var listId = new Meteor.Collection.ObjectID(_this.data._id);
+  var strListId = _this.data._id;
+  var listId = new Meteor.Collection.ObjectID(strListId);
   Meteor.subscribe('cards', function() {
     var data = function() {
       var cards = Cards.find({ listId: listId });
@@ -110,15 +111,15 @@ var finishEditListName = function(event, template) {
 };
 
 var finishAddCard = function(event, template) {
-      var increment = 90;
-      var $listFooter = template.$('.list-footer');
-      var $listContent = template.$('.list-content');
-      var footerHeight = $listFooter.height();
-      var contentHeight = $listContent.height();
-      $listContent.animate({ height: contentHeight + increment }, 200);
-      $listFooter.animate({ height: footerHeight - increment }, 200, function() {
-        template.$('.list-footer .edit-view').hide().siblings('.static-view').show();
-      });
+  var increment = 90;
+  var $listFooter = template.$('.list-footer');
+  var $listContent = template.$('.list-content');
+  var footerHeight = $listFooter.height();
+  var contentHeight = $listContent.height();
+  $listContent.animate({ height: contentHeight + increment }, 200);
+  $listFooter.animate({ height: footerHeight - increment }, 200, function() {
+    template.$('.list-footer .edit-view').hide().siblings('.static-view').show();
+  });
 };
 
 Template.list.events({

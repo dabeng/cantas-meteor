@@ -4,7 +4,7 @@ Template.list.rendered = function() {
   var _this = this;
   var sListId = _this.data._id;
   var listId = new Meteor.Collection.ObjectID(sListId);
-  Meteor.subscribe('cards', function() {
+  Meteor.subscribe('cards-by-listId', sListId, function() {
     var data = function() {
       var cards = Cards.find({ listId: listId });
       var clearifyId = function (doc) {
@@ -54,19 +54,26 @@ Template.list.rendered = function() {
       var $endList = $(ui.item).closest('.list-item');
       var end_card_order = $endList.find('.list-content').sortable('toArray').join(',');
       var endListId = new Meteor.Collection.ObjectID($endList[0].id);
-      Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }});
+
       // if you move the card into the other list
-      if ($beginList[0].id !== $endList[0].id) {
+      if ($beginList[0].id === $endList[0].id) {
+        Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }});
+      }
+      else {
         // update the current card's listId field
         var sCardId = ui.item[0].id;
         var cardId = new Meteor.Collection.ObjectID(sCardId);
         Meteor.subscribe('card-by-id', sCardId);
         var card = Cards.findOne({ _id: cardId });
-        Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) } });
+        // Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) } });
         // update the card_order field of the card's original list
         var begin_card_order = $beginList.find('.list-content').sortable('toArray').join(',');
         var beginListId = new Meteor.Collection.ObjectID($beginList[0].id);
-        Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }});
+        Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }}, function() {
+          Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }}, function() {
+            Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) } });
+          });
+        });
       }
     }
   })
@@ -90,13 +97,15 @@ Template.list.rendered = function() {
           $moved_card_id.remove();
         } else {
           if($cardItems.eq(index)[0].id !== moved_card_id) {
-            if (index > $moved_card_id.index('.card-item')) {
+            if (index > $moved_card_id.index($cardItems)) {
               $moved_card_id.insertAfter($cardItems.eq(index));
             } else {
               $moved_card_id.insertBefore($cardItems.eq(index));
             }
           }
         }
+      } else {
+        $('#' + sListId).find('.list-content').append($moved_card_id);
       }
     }
   });

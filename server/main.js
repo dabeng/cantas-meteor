@@ -48,6 +48,11 @@ Meteor.publish('cards', function () {
   return Cards.find();
 });
 
+Meteor.publish('cards-by-listId', function (s_id) {
+  return Cards.find({ listId: new Meteor.Collection.ObjectID(s_id) });
+});
+
+
 Meteor.publish('card-by-id', function (s_id) {
   return Cards.find({ _id: new Meteor.Collection.ObjectID(s_id) });
 });

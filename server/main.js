@@ -25,11 +25,12 @@ Meteor.publish('current-list-by-id', function (_id) {
 
   Lists.find({ _id: _id }).observeChanges({
     changed: function (id, fields) {
-      if(fields.list_order) {
+      if (fields.list_order) {
         _this.changed('lists', _id, { card_order: fields.card_order, moved_card_id: fields.moved_card_id });
       }
     }
   });
+
 });
 
 Meteor.publish('current-board-by-id', function (_id) {
@@ -56,6 +57,7 @@ Meteor.publish('cards-by-listId', function (s_id) {
 Meteor.publish('card-by-id', function (s_id) {
   return Cards.find({ _id: new Meteor.Collection.ObjectID(s_id) });
 });
+
 
 Meteor.publish('current-card-by-id', function (_id) {
   var _this = this;

@@ -43,7 +43,7 @@ Template.list.rendered = function() {
     var tmpl = function() {
       return Template.cardItem;
     };
-    Blaze.render(Blaze.Each(data, tmpl), _this.$('.list-content')[0]);
+    _this.$('.list-content').append(Blaze.toHTML(Blaze.Each(data, tmpl)));
   });
 
   var $sortableCard = $('.list-content').sortable({
@@ -55,22 +55,16 @@ Template.list.rendered = function() {
       var end_card_order = $endList.find('.list-content').sortable('toArray').join(',');
       var endListId = new Meteor.Collection.ObjectID($endList[0].id);
 
-      // if you move the card into the other list
+      // if you move the card inside the same list
       if ($beginList[0].id === $endList[0].id) {
         Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }});
-      }
-      else {
-        // update the current card's listId field
+      } else { // if you move the card into the other list
         var sCardId = ui.item[0].id;
         var cardId = new Meteor.Collection.ObjectID(sCardId);
-        Meteor.subscribe('card-by-id', sCardId);
-        var card = Cards.findOne({ _id: cardId });
-        // Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) } });
-        // update the card_order field of the card's original list
         var begin_card_order = $beginList.find('.list-content').sortable('toArray').join(',');
         var beginListId = new Meteor.Collection.ObjectID($beginList[0].id);
-        Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }}, function() {
-          Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }}, function() {
+        Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }}, function() {
+          Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }}, function() {
             Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) } });
           });
         });
@@ -79,37 +73,42 @@ Template.list.rendered = function() {
   })
   .disableSelection();
 
-
-  Tracker.autorun(function () {
+  Tracker.autorun(function (computation) {
     Meteor.subscribe('current-list-by-id', listId);
     var currentList = Lists.findOne(listId);
-    if (currentList.moved_card_id) {
-      var moved_card_id = currentList.moved_card_id;
-      var $moved_card_id = $('#' + moved_card_id);
-      var $cardItems = $('#' + sListId).find('.card-item');
-      var index = $.inArray(moved_card_id, currentList.card_order.split(','));
-      if ($cardItems.length) {
-        if (index === $cardItems.length) {
-          if ($cardItems.last()[0].id !== moved_card_id) {
-            $('#' + sListId).find('.list-content').append($moved_card_id);
+    var moved_card_id = currentList.moved_card_id;
+    var $moved_card = $('#' + moved_card_id);
+    if (!computation.firstRun) {
+      // moved-card is existing card
+      if ($moved_card.length) {
+        var $cardItems = $('#' + sListId).find('.card-item');
+        var original_index = $cardItems.index($moved_card);
+        var target_index = $.inArray(moved_card_id, currentList.card_order.split(','));
+        // moved-card is being dragged/dropped  in the same list
+        if (target_index !== -1 && original_index > -1) {
+          if (original_index < target_index) {
+            $moved_card.insertAfter($cardItems.eq(target_index));
+          } else if (original_index > target_index) {
+            $moved_card.insertBefore($cardItems.eq(target_index));
           }
-        } else if (index === -1) {
-          $moved_card_id.remove();
-        } else {
-          if($cardItems.eq(index)[0].id !== moved_card_id) {
-            if (index > $moved_card_id.index($cardItems)) {
-              $moved_card_id.insertAfter($cardItems.eq(index));
-            } else {
-              $moved_card_id.insertBefore($cardItems.eq(index));
-            }
+        } // moved-card is being dragged/dropped  into the other list 
+        else if (target_index !== -1 && original_index === -1) {
+          if (target_index === 0) {
+            $('#' + sListId).find('.list-content').prepend($moved_card);
+          } else if (target_index === $cardItems.length) {
+            $('#' + sListId).find('.list-content').append($moved_card);
+          } else {
+            $moved_card.insertBefore($cardItems.eq(target_index));
           }
         }
-      } else {
-        $('#' + sListId).find('.list-content').append($moved_card_id);
+      } // moved-card is newly added card
+      else {
+        var data = Cards.findOne({_id : new Meteor.Collection.ObjectID(moved_card_id)});
+        data._id = data._id._str;
+        $('#' + sListId).find('.list-content').append(Blaze.toHTMLWithData(Template.cardItem, data));
       }
     }
   });
-
 
 };
 

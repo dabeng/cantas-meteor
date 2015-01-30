@@ -12,8 +12,26 @@ Meteor.publish('board-by-id', function (s_id) {
   return Boards.find({ _id: new Meteor.Collection.ObjectID(s_id) });
 });
 
+Meteor.publish('current-board-by-id', function (_id) {
+  var _this = this;
+
+  Boards.find({ _id: _id }).observeChanges({
+    changed: function (id, fields) {
+      if(fields.list_order) {
+        _this.changed('boards', _id, { list_order: fields.list_order, moved_list_id: fields.moved_list_id });
+
+      }
+    }
+  });
+
+});
+
 Meteor.publish('lists', function () {
   return Lists.find();
+});
+
+Meteor.publish('lists-by-boardId', function (s_id) {
+  return Lists.find({ boardId: new Meteor.Collection.ObjectID(s_id) });
 });
 
 Meteor.publish('list-by-id', function (s_id) {
@@ -25,24 +43,12 @@ Meteor.publish('current-list-by-id', function (_id) {
 
   Lists.find({ _id: _id }).observeChanges({
     changed: function (id, fields) {
-      if (fields.list_order) {
+      if (fields.card_order) {
         _this.changed('lists', _id, { card_order: fields.card_order, moved_card_id: fields.moved_card_id });
       }
     }
   });
 
-});
-
-Meteor.publish('current-board-by-id', function (_id) {
-  var _this = this;
-
-  Boards.find({ _id: _id }).observeChanges({
-    changed: function (id, fields) {
-      if(fields.list_order) {
-        _this.changed('boards', _id, { list_order: fields.list_order, moved_list_id: fields.moved_list_id });
-      }
-    }
-  });
 });
 
 Meteor.publish('cards', function () {
@@ -71,6 +77,6 @@ Meteor.publish('current-card-by-id', function (_id) {
   });
 });
 
-Meteor.publish('checklistItems', function () {
-  return ChecklistItems.find();
+Meteor.publish('checklistItems-by-cardId', function (s_id) {
+  return ChecklistItems.find({ cardId: new Meteor.Collection.ObjectID(s_id) });
 });

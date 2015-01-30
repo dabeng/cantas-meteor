@@ -7,33 +7,19 @@ Template.list.rendered = function() {
   Meteor.subscribe('cards-by-listId', sListId, function() {
     var data = function() {
       var cards = Cards.find({ listId: listId });
+
       var clearifyId = function (doc) {
         doc._id = doc._id._str;
         return doc;
       }
 
       var newCards = cards.map(clearifyId);
-      Meteor.subscribe('list-by-id', listId._str);
-      var list = Lists.findOne({ _id: listId });
-      if (list.card_order) {
-        var cardIds = list.card_order.split(',');
+      if (_this.data.card_order) {
+        var cardIds = _this.data.card_order.split(',');
         var finalCards = new Array(cardIds.length);
         newCards.forEach(function(item) {
-          var index = $.inArray(item._id, cardIds);
-          if (index > -1) {
-            finalCards[index] = item;
-          } else {
-            finalCards[finalCards.length - 1] = item;
-          }
+            finalCards[$.inArray(item._id, cardIds)] = item;
         });
-        if (newCards.length === cardIds.length - 1) {
-          for (var i=0; i< newCards.length; i++) {
-            if (!finalCards[i]) {
-              break;
-            }
-          }
-          finalCards.splice(i, 1);
-        }
 
         return finalCards;
       } else {
@@ -43,7 +29,7 @@ Template.list.rendered = function() {
     var tmpl = function() {
       return Template.cardItem;
     };
-    _this.$('.list-content').append(Blaze.toHTML(Blaze.Each(data, tmpl)));
+    _this.$('.list-content').html(Blaze.toHTML(Blaze.Each(data, tmpl)));
   });
 
   var $sortableCard = $('.list-content').sortable({

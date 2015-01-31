@@ -27,7 +27,6 @@ Template.board.rendered = function() {
       return Template.list;
     };
     Blaze.render(Blaze.Each(data, tmpl), _this.$('#board-content')[0]);
-    // _this.$('#board-content').append(Blaze.toHTML(Blaze.Each(data, tmpl)));
   });
 
 

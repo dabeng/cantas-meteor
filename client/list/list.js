@@ -127,6 +127,9 @@ Template.list.events({
     Lists.update(listId, {$set: { name: template.$('.list-caption .edit-view textarea').val().trim() }});
   },
   'click .list-footer .static-view span': function(event, template) {
+    if ($('.list-footer .edit-view').filter(':visible').length) {
+      $('.list-footer .btn-cancel').click();
+    }
     var $listFooter = template.$('.list-footer');
     var $listContent = template.$('.list-content');
     if ($listFooter.find('.edit-view').is(':hidden')) {
@@ -140,7 +143,7 @@ Template.list.events({
       });
     }
   },
-  'blur .list-footer textarea': finishAddCard,
+  'click .list-footer .btn-cancel': finishAddCard,
   'mousedown .list-footer .btn-save': function(event, template) {
     var _this = this;
     var newCard = template.find('.list-footer textarea');

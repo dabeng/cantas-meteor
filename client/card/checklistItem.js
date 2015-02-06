@@ -1,10 +1,3 @@
-
-var finishEditCLI = function(event, template) {
-  $(event.target).closest('.editable-region')
-    .find('.edit-view').hide()
-    .siblings('.static-view').show();
-};
-
 Template.checklistItem.events({
   'click .cli-checkbox': function (event, template) {
     ChecklistItems.update(new Meteor.Collection.ObjectID(this._id), {$set: {checked: ! this.checked}});
@@ -18,7 +11,7 @@ Template.checklistItem.events({
       {$set: { name: template.$('.edit-view textarea').val().trim() }}
     );
   },
-  'blur .edit-view textarea': finishEditCLI,
+  'blur .edit-view textarea': finishEditName,
   'click .cli-delete': function (event, template) {
     ChecklistItems.remove(new Meteor.Collection.ObjectID(this._id), function(error, _id) {
       Meteor.subscribe('card-by-id', template.data.cardId._str, function() {

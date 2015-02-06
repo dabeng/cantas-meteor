@@ -68,12 +68,6 @@ Template.list.rendered = function() {
 
 };
 
-var finishEditListName = function(event, template) {
-  $(event.target).closest('.editable-region')
-    .find('.edit-view').hide()
-    .siblings('.static-view').show();
-};
-
 var finishAddCard = function(event, template) {
   var increment = 90;
   var $listFooter = template.$('.list-footer');
@@ -91,7 +85,7 @@ Template.list.events({
     template.$('.list-caption .static-view').hide().siblings('.edit-view').show();
     template.$('.list-caption .edit-view textarea').val(event.target.textContent).select();
   },
-  'blur .list-caption .edit-view textarea': finishEditListName,
+  'blur .list-caption .edit-view textarea': finishEditName,
   'mousedown .list-caption .edit-view .btn-save': function(event, template) {
     var listId = new Meteor.Collection.ObjectID(this._id);
     Lists.update(listId, {$set: { name: template.$('.list-caption .edit-view textarea').val().trim() }});

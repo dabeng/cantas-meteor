@@ -46,12 +46,6 @@ Template.board.rendered = function() {
 
 };
 
-var finishEditBoardName = function(event, template) {
-  $(event.target).closest('.editable-region')
-    .find('.edit-view').hide()
-    .siblings('.static-view').show();
-};
-
 Template.board.events({
   'click #board-caption .static-view span': function(event, template) {
     template.$('#board-caption .static-view').hide().siblings('.edit-view').show();
@@ -62,7 +56,7 @@ Template.board.events({
       $set: { name: template.$('#board-caption .edit-view textarea').val().trim() }
     });
   },
-  'blur #board-caption .edit-view textarea': finishEditBoardName,
+  'blur #board-caption .edit-view textarea': finishEditName,
   'click #add-list-option': function (event, template) {
     var $boardFooter = $('#board-footer');
     var $boardContent = $('#board-content');

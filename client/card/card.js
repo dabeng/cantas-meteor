@@ -61,40 +61,6 @@ Template.card.rendered = function() {
   })
   .disableSelection();
 
-  // resort the checklist items of non-current client when the cli_order field of card collection
-  // is updated
-  Tracker.autorun(function () {
-    Meteor.subscribe('current-card-by-id', cardId);
-    var currentCard = Cards.findOne(cardId);
-    if (currentCard && currentCard.moved_cli_id) {
-      var moved_cli_id = currentCard.moved_cli_id;
-      var $moved_cli_id = $('#' + moved_cli_id);
-      var $clItems = $sortableCL.children('checklistItem');
-      var index = $.inArray(moved_cli_id, currentCard.cli_order.split(','));
-      // if checklist items of current client is empty, there is no need to ajust order for other client
-      if ($clItems.length) {
-        // insert a new checklist item
-        if (index === $clItems.length) {
-          // juse need to resort checklist item in non-current client, because
-          // cheklist item is in order already.
-          if ($clItems.last()[0].id !== moved_cli_id) {
-            $sortableCL.append($moved_cli_id);
-          }
-        } else if (index === -1) { // delete the checklist item with id moved_cli_id
-          $moved_cli_id.remove();
-        } else { // just drag and drop existing checklist items in current card
-          if($clItems.eq(index)[0].id !== moved_cli_id) {
-            if (index > $moved_cli_id.index('.checklistItem')) {
-              $moved_cli_id.insertAfter($clItems.eq(index));
-            } else {
-              $moved_cli_id.insertBefore($clItems.eq(index));
-            }
-          }
-        }
-      }
-    }
-  });
-
 };
 
 var finishEditCardName = function(event, template) {

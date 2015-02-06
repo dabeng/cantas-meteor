@@ -5,35 +5,19 @@ Template.board.rendered = function() {
   var boardId = _this.data._id;
   Meteor.subscribe('lists', function() {
     var data = function() {
-      // return Lists.find({ boardId: boardId });
-      var lists = Lists.find({ boardId: boardId });
       var clearifyId = function (doc) {
         doc._id = doc._id._str;
         return doc;
-      }
+      };
+      var lists = Lists.find({ boardId: boardId });
       var newLists = lists.map(clearifyId);
-      Meteor.subscribe('board-by-id', boardId._str);
       var board = Boards.findOne({ _id: boardId });
       if (board.list_order) {
         var listIds = board.list_order.split(',');
-        var finalLists = new Array(listIds.length);
+        var finalLists = [];
         newLists.forEach(function(item) {
-          var index = $.inArray(item._id, listIds);
-          if (index > -1) {
-            finalLists[index] = item;
-          } else {
-            finalLists[finalLists.length - 1] = item;
-          }
+          finalLists[$.inArray(item._id, listIds)] = item;
         });
-        if (newLists.length === listIds.length - 1) {
-          for (var i=0; i< newLists.length; i++) {
-            if (!finalLists[i]) {
-              break;
-            }
-          }
-          finalLists.splice(i, 1);
-        }
-
         return finalLists;
       } else {
         return newLists;
@@ -46,8 +30,8 @@ Template.board.rendered = function() {
     Blaze.render(Blaze.Each(data, tmpl), _this.$('#board-content')[0]);
   });
 
-
   var $sortableList = $('#board-content').sortable({
+    tolerance: 'pointer',
     placeholder: 'list-placeholder',
     stop: function(event, ui) {
       var list_order = $sortableList.sortable('toArray').join(',');

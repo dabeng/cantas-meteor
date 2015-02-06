@@ -37,6 +37,7 @@ Template.list.rendered = function() {
     placeholder: 'card-placeholder',
     connectWith: '.list-content',
     stop: function (event, ui) {
+      var sCardId = ui.item[0].id;
       var $beginList = $(event.target).closest('.list-item');
       var $endList = $(ui.item).closest('.list-item');
       var end_card_order = $endList.find('.list-content').sortable('toArray').join(',');
@@ -44,9 +45,8 @@ Template.list.rendered = function() {
 
       // if you move the card inside the same list
       if ($beginList[0].id === $endList[0].id) {
-        Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }});
+        Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: sCardId }});
       } else { // if you move the card into the other list
-        var sCardId = ui.item[0].id;
         var cardId = new Meteor.Collection.ObjectID(sCardId);
         var begin_card_order = $beginList.find('.list-content').sortable('toArray').join(',');
         var beginListId = new Meteor.Collection.ObjectID($beginList[0].id);

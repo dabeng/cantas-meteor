@@ -17,30 +17,10 @@ Template.card.rendered = function() {
       var card = Cards.findOne({ _id: cardId });
       if (card.cli_order) {
         var clItemIds = card.cli_order.split(',');
-        var finalClItems = new Array(clItemIds.length);
+        var finalClItems = [];
         newClItems.forEach(function(item) {
-          var index = $.inArray(item._id, clItemIds);
-          if (index > -1) {
-            finalClItems[index] = item;
-          } else {
-            // because checklistItem collection updating is priority to card collection(fields: cli_order
-            // and moved_cli_id) updating, if index === -1, then we just now insert a new checklist item
-            // into checklistItem collection while, at this point, card collection hasn't been updated 
-            // correspondingly. So we need to put it in the end.
-            finalClItems[finalClItems.length - 1] = item;
-          }
+          finalClItems[$.inArray(item._id, clItemIds)] = item;
         });
-        // if newClItems is smaller than clItemIds, is says that we just now delete one checklist item
-        // from checklistItem collection. We need to remove one meaningless null value from finalClItems.
-        if (newClItems.length === clItemIds.length - 1) {
-          for (var i=0; i< newClItems.length; i++) {
-            if (!finalClItems[i]) {
-              break;
-            }
-          }
-          finalClItems.splice(i, 1);
-        }
-
         return finalClItems;
       } else {
         return newClItems;

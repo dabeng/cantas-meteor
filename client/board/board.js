@@ -33,9 +33,12 @@ Template.board.rendered = function() {
   var $sortableList = $('#board-content').sortable({
     tolerance: 'pointer',
     placeholder: 'list-placeholder',
+    start: function(event, ui) { $('#' + ui.item[0].id).css('cursor', 'move'); },
     stop: function(event, ui) {
+      var sListId = ui.item[0].id;
+      $('#' + sListId).css('cursor', '');
       var list_order = $sortableList.sortable('toArray').join(',');
-      Boards.update(boardId, { $set: {list_order: list_order, moved_list_id: ui.item[0].id }});
+      Boards.update(boardId, { $set: {list_order: list_order, moved_list_id: sListId }});
     }
   })
   .disableSelection();

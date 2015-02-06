@@ -34,9 +34,12 @@ Template.card.rendered = function() {
 
   var $sortableCL = $('#card-content .checklist').sortable({
     placeholder: 'ui-state-highlight',
+    sort: function(event, ui) { $('#' + ui.item[0].id).css('cursor', 'move'); },
     stop: function(event, ui) {
+      var sCliId = ui.item[0].id;
+      $('#' + sCliId).css('cursor', '');
       var cli_order = $sortableCL.sortable('toArray').join(',');
-      Cards.update(_this.data._id, { $set: {cli_order: cli_order, moved_cli_id: ui.item[0].id }});
+      Cards.update(_this.data._id, { $set: {cli_order: cli_order, moved_cli_id: sCliId }});
     }
   })
   .disableSelection();

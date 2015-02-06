@@ -36,6 +36,7 @@ Template.list.rendered = function() {
   var $sortableCard = $('.list-content').sortable({
     placeholder: 'card-placeholder',
     connectWith: '.list-content',
+    start: function(event, ui) { $('#' + ui.item[0].id).find('a').css('cursor', 'move'); },
     stop: function (event, ui) {
       var sCardId = ui.item[0].id;
       var $beginList = $(event.target).closest('.list-item');

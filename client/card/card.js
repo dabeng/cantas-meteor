@@ -34,7 +34,7 @@ Template.card.rendered = function() {
 
   var $sortableCL = $('#card-content .checklist').sortable({
     placeholder: 'ui-state-highlight',
-    sort: function(event, ui) { $('#' + ui.item[0].id).css('cursor', 'move'); },
+    start: function(event, ui) { $('#' + ui.item[0].id).css('cursor', 'move'); },
     stop: function(event, ui) {
       var sCliId = ui.item[0].id;
       $('#' + sCliId).css('cursor', '');

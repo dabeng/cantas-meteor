@@ -43,7 +43,6 @@ Template.board.rendered = function() {
   })
   .disableSelection();
 
-
 };
 
 Template.board.events({

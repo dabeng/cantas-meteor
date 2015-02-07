@@ -13,7 +13,6 @@ Template.card.rendered = function() {
       }
       // remove the string "ObjectId()" to simplify _id
       var newClItems = clItems.map(clearifyId);
-      Meteor.subscribe('card-by-id', cardId._str);
       var card = Cards.findOne({ _id: cardId });
       if (card.cli_order) {
         var clItemIds = card.cli_order.split(',');

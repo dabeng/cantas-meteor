@@ -122,11 +122,9 @@ Template.list.events({
         if (error) {
           // TODO: exception handling
         } else {
-          Meteor.subscribe('list-by-id', _this._id, function() {
-            var list = Lists.findOne({ _id: listId });
-            var new_card_order = !!(list.card_order) ? list.card_order + ',' +_id._str : _id._str;
-            Lists.update(listId, { $set: {card_order: new_card_order, moved_card_id: _id._str }});
-          });
+          var list = Lists.findOne({ _id: listId });
+          var new_card_order = !!(list.card_order) ? list.card_order + ',' +_id._str : _id._str;
+          Lists.update(listId, { $set: {card_order: new_card_order, moved_card_id: _id._str }});
         }
       });
       newCard.value = '';

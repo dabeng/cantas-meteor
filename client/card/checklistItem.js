@@ -14,7 +14,9 @@ Template.checklistItem.events({
   'blur .edit-view textarea': finishEditName,
   'click .cli-delete': function (event, template) {
     ChecklistItems.remove(new Meteor.Collection.ObjectID(this._id), function(error, _id) {
-      Meteor.subscribe('card-by-id', template.data.cardId._str, function() {
+      if (error) {
+        // TODO: exception handling
+      } else {
         var card = Cards.findOne({ _id: template.data.cardId });
         var new_cli_order;
         var old_cli_order = card.cli_order;
@@ -30,7 +32,7 @@ Template.checklistItem.events({
           }
         }
         Cards.update(template.data.cardId, { $set: {cli_order: new_cli_order, moved_cli_id: template.data._id }});
-      });
+      }
     });
   }
 });

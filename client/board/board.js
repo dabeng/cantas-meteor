@@ -3,14 +3,13 @@ Lists = new Meteor.Collection('lists');
 Template.board.rendered = function() {
   var _this = this;
   var boardId = _this.data._id;
-  Meteor.subscribe('lists', function() {
+  Meteor.subscribe('lists-by-boardId', boardId._str, function() {
     var data = function() {
       var clearifyId = function (doc) {
         doc._id = doc._id._str;
         return doc;
       };
-      var lists = Lists.find({ boardId: boardId });
-      var newLists = lists.map(clearifyId);
+      var newLists = Lists.find({ boardId: boardId }).map(clearifyId);
       var board = Boards.findOne({ _id: boardId });
       if (board.list_order) {
         var listIds = board.list_order.split(',');
@@ -23,10 +22,7 @@ Template.board.rendered = function() {
         return newLists;
       }
     };
-    var tmpl = function() {
-      return Template.list;
-    };
-
+    var tmpl = function() {return Template.list; };
     Blaze.render(Blaze.Each(data, tmpl), _this.$('#board-content')[0]);
   });
 
@@ -46,13 +42,13 @@ Template.board.rendered = function() {
 };
 
 Template.board.events({
-  'click #board-caption .static-view span': openEditView,
+  'click #board-caption .static-view span': showEditCaptionView,
   'mousedown #board-caption .edit-view .btn-save': function(event, template) {
     Boards.update(this._id, {
       $set: { name: template.$('#board-caption .edit-view textarea').val().trim() }
     });
   },
-  'blur #board-caption .edit-view textarea': finishEditName,
+  'blur #board-caption .edit-view textarea': hideEditCaptionView,
   'click #add-list-option': function (event, template) {
     var $boardFooter = $('#board-footer');
     var $boardContent = $('#board-content');

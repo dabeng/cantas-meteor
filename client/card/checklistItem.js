@@ -2,13 +2,13 @@ Template.checklistItem.events({
   'click .cli-checkbox': function (event, template) {
     ChecklistItems.update(new Meteor.Collection.ObjectID(this._id), {$set: {checked: ! this.checked}});
   },
-  'click .cli-name': openEditView,
+  'click .cli-name': showEditCaptionView,
   'mousedown .edit-view .btn-save': function(event, template) {
     ChecklistItems.update(new Meteor.Collection.ObjectID(this._id),
       {$set: { name: template.$('.edit-view textarea').val().trim() }}
     );
   },
-  'blur .edit-view textarea': finishEditName,
+  'blur .edit-view textarea': hideEditCaptionView,
   'click .cli-delete': function (event, template) {
     ChecklistItems.remove(new Meteor.Collection.ObjectID(this._id), function(error, _id) {
       if (error) {

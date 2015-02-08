@@ -13,8 +13,7 @@ Template.list.rendered = function() {
       };
       // we just wanna re-render cards when list's card_order changed rather than card's listId changed
       Deps.nonreactive(function () {
-        var cards = Cards.find({ listId: listId });
-        newCards = cards.map(clearifyId);
+        newCards = Cards.find({ listId: listId }).map(clearifyId);
       });
 
       var list = Lists.findOne({ _id: listId });
@@ -43,7 +42,6 @@ Template.list.rendered = function() {
       var $endList = $(ui.item).closest('.list-item');
       var end_card_order = $endList.find('.list-content').sortable('toArray').join(',');
       var endListId = new Meteor.Collection.ObjectID($endList[0].id);
-
       // if you move the card inside the same list
       if ($beginList[0].id === $endList[0].id) {
         Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: sCardId }});
@@ -54,8 +52,7 @@ Template.list.rendered = function() {
         Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) }}, function() {
           /* The following line is very important, it's used to avoid this error --
           Exception from Tracker recompute function: Error: Failed to execute 'insertBefore' on 'Node':
-          The node before which the new node is to be inserted is not a child of this node. 
-          */
+          The node before which the new node is to be inserted is not a child of this node. */
           $('#' + sCardId).remove();
           Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }}, function() {
             Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }});
@@ -69,8 +66,8 @@ Template.list.rendered = function() {
 };
 
 Template.list.events({
-  'click .list-caption .static-view span': openEditView,
-  'blur .list-caption .edit-view textarea': finishEditName,
+  'click .list-caption .static-view span': showEditCaptionView,
+  'blur .list-caption .edit-view textarea': hideEditCaptionView,
   'mousedown .list-caption .edit-view .btn-save': function(event, template) {
     var listId = new Meteor.Collection.ObjectID(this._id);
     Lists.update(listId, {$set: { name: template.$('.list-caption .edit-view textarea').val().trim() }});

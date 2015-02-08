@@ -4,15 +4,14 @@ Template.card.rendered = function() {
   var _this = this;
   var cardId = _this.data._id;
 
-  Meteor.subscribe('checklistItems', function() {
+  Meteor.subscribe('checklistItems-by-cardId', cardId._str, function() {
     var data = function() {
-      var clItems = ChecklistItems.find({ cardId: cardId });
       var clearifyId = function (doc) {
         doc._id = doc._id._str;
         return doc;
       }
       // remove the string "ObjectId()" to simplify _id
-      var newClItems = clItems.map(clearifyId);
+      var newClItems = ChecklistItems.find({ cardId: cardId }).map(clearifyId);
       var card = Cards.findOne({ _id: cardId });
       if (card.cli_order) {
         var clItemIds = card.cli_order.split(',');
@@ -25,9 +24,7 @@ Template.card.rendered = function() {
         return newClItems;
       }
     };
-    var tmpl = function() {
-      return Template.checklistItem;
-    };
+    var tmpl = function() {return Template.checklistItem; };
     Blaze.render(Blaze.Each(data, tmpl), _this.$('.checklist')[0]);
   });
 
@@ -46,11 +43,11 @@ Template.card.rendered = function() {
 };
 
 Template.card.events({
-  'click #card-caption .static-view span': openEditView,
+  'click #card-caption .static-view span': showEditCaptionView,
   'mousedown #card-caption .edit-view .btn-save': function(event, template) {
     Cards.update(this._id, {$set: { name: template.$('#card-caption .edit-view textarea').val().trim() }});
   },
-  'blur #card-caption .edit-view textarea': finishEditName,
+  'blur #card-caption .edit-view textarea': hideEditCaptionView,
   'click #add-cli-option': function (event, template) {
     var $cardFooter = $('#card-footer');
     var $cardContent = $('#card-content');

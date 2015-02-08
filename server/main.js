@@ -8,12 +8,15 @@ Meteor.publish('boards', function () {
 });
 
 Meteor.publish('board-by-id', function (s_id) {
-  // new Mongo.ObjectID(sId) is equivalent
   return Boards.find({ _id: new Meteor.Collection.ObjectID(s_id) });
 });
 
 Meteor.publish('lists', function () {
   return Lists.find();
+});
+
+Meteor.publish('lists-by-boardId', function (s_id) {
+  return Lists.find({ boardId: new Meteor.Collection.ObjectID(s_id) });
 });
 
 Meteor.publish('list-by-id', function (s_id) {
@@ -32,6 +35,6 @@ Meteor.publish('card-by-id', function (s_id) {
   return Cards.find({ _id: new Meteor.Collection.ObjectID(s_id) });
 });
 
-Meteor.publish('checklistItems', function () {
-  return ChecklistItems.find();
+Meteor.publish('checklistItems-by-cardId', function (s_id) {
+  return ChecklistItems.find({ cardId: new Meteor.Collection.ObjectID(s_id) });
 });

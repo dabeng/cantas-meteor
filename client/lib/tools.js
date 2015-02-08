@@ -1,12 +1,12 @@
-// some clearing tasks after user edited the name of board, list, card, checklistitem.
-finishEditName = function (event, template) {
-  $(event.target).closest('.editable-region').find('.edit-view').hide().siblings('.static-view').show();
-};
-// event handlers for clicking caption property
-openEditView = function (event, template) {
+showEditCaptionView = function (event, template) {
   $(event.target).closest('.static-view').hide().siblings('.edit-view').show()
     .find('textarea').val(event.target.textContent).select();
 };
+
+hideEditCaptionView = function (event, template) {
+  $(event.target).closest('.editable-region').find('.edit-view').hide().siblings('.static-view').show();
+};
+
 showFooterView = function ($footerView, $contentView, footerHeight, fromList) {
   $contentView.animate({ height: $contentView.outerHeight() - footerHeight }, 200);
   $footerView.show().animate({ height: (fromList ? footerHeight + 20 : footerHeight)  }, 200, function() {
@@ -17,6 +17,7 @@ showFooterView = function ($footerView, $contentView, footerHeight, fromList) {
     }
   });
 };
+
 hideFooterView = function (event, template) {
   var increment =  template.view.name === 'Template.list' ?  20 : 0;
   var $footerView = $(event.target).closest('.footer-view');

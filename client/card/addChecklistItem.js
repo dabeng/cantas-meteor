@@ -17,5 +17,6 @@ Template.addChecklistItem.events({
         newCLI.value = '';
       });
     }
-  }
+  },
+  'click .btn-cancel': hideFooterView
 });

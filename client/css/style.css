@@ -422,7 +422,7 @@ html,body {
 
 #card-content {
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - 40px);
   overflow-y: auto;
 }
 
@@ -493,7 +493,7 @@ html,body {
 }
 
 #ta-addList {
-  width: calc(100% - 150px);
+  width: calc(100% - 180px);
   resize: none;
 }
 
@@ -510,7 +510,7 @@ html,body {
 }
 
 #ta-addCLI {
-  width: calc(100% - 150px);
+  width: calc(100% - 180px);
   resize: none;
 }
 

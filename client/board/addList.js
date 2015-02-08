@@ -1,5 +1,5 @@
 Template.addList.events({
-  'click #btn-addList': function (event, template) {
+  'click .btn-save': function (event, template) {
     var newList = template.find('textarea');
     if (newList.value.trim().length) {
       var boardId = template.data.boardId;
@@ -15,5 +15,6 @@ Template.addList.events({
           });
       newList.value = '';
     }
-  }
+  },
+  'click .btn-cancel': hideFooterView
 });

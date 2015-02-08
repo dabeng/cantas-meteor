@@ -46,10 +46,7 @@ Template.card.rendered = function() {
 };
 
 Template.card.events({
-  'click #card-caption .static-view span': function(event, template) {
-    template.$('#card-caption .static-view').hide().siblings('.edit-view').show();
-    template.$('#card-caption .edit-view textarea').val(event.target.textContent).select();
-  },
+  'click #card-caption .static-view span': openEditView,
   'mousedown #card-caption .edit-view .btn-save': function(event, template) {
     Cards.update(this._id, {$set: { name: template.$('#card-caption .edit-view textarea').val().trim() }});
   },
@@ -61,29 +58,10 @@ Template.card.events({
       if(!$('#ta-addCLI').length) {
         Blaze.renderWithData(Template.addChecklistItem, {cardId: this._id}, $cardFooter[0]);
       }
-      var footerHeight = 50;
-      var contentHeight  =  $('#card-content').height();
-      $cardContent.animate({ height: contentHeight - footerHeight }, 300);
-      $cardFooter.show().animate({ height: footerHeight }, 300);
+      showFooterView($cardFooter, $cardContent, 70);
     }
   },
   'click .cli-delete': function (event, template) {
     ChecklistItems.remove(this._id);
-  },
-  'mouseenter .close-btn': function(evnet) {
-    $(evnet.target).removeClass('fa-times-circle').addClass('fa-times-circle-o');
-  },
-  'mouseleave .close-btn': function(evnet) {
-    $(evnet.target).removeClass('fa-times-circle-o').addClass('fa-times-circle');
-  },
-  'click .close-btn': function(evnet, template) {
-    var $cardFooter = $('#card-footer');
-    var $cardContent = $('#card-content');
-    var footerHeight = 50;
-    var contentHeight = $('#card-content').height();
-    $cardContent.animate({ height: contentHeight + footerHeight }, 300);
-    $cardFooter.animate({ height: 0 }, 300, function() {
-      $(this).hide();
-    });
   }
 });

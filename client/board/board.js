@@ -46,10 +46,7 @@ Template.board.rendered = function() {
 };
 
 Template.board.events({
-  'click #board-caption .static-view span': function(event, template) {
-    template.$('#board-caption .static-view').hide().siblings('.edit-view').show();
-    template.$('#board-caption .edit-view textarea').val(event.target.textContent).select();
-  },
+  'click #board-caption .static-view span': openEditView,
   'mousedown #board-caption .edit-view .btn-save': function(event, template) {
     Boards.update(this._id, {
       $set: { name: template.$('#board-caption .edit-view textarea').val().trim() }
@@ -63,26 +60,7 @@ Template.board.events({
       if (!$('#ta-addList').length) {
         Blaze.renderWithData(Template.addList, {boardId: this._id}, $boardFooter[0]);
       }
-      var footerHeight = 70;
-      var contentHeight  =  $('#board-content').outerHeight();
-      $boardContent.animate({ height: contentHeight - footerHeight }, 300);
-      $boardFooter.show().animate({ height: footerHeight }, 300);
+      showFooterView($boardFooter, $boardContent, 70);
     }
-  },
-  'mouseenter .close-btn': function(evnet) {
-    $(evnet.target).removeClass('fa-times-circle').addClass('fa-times-circle-o');
-  },
-  'mouseleave .close-btn': function(evnet) {
-    $(evnet.target).removeClass('fa-times-circle-o').addClass('fa-times-circle');
-  },
-  'click .close-btn': function(evnet, template) {
-    var $boardFooter = $('#board-footer');
-    var $boardContent = $('#board-content');
-    var footerHeight = 70;
-    var contentHeight = $('#board-content').outerHeight();
-    $boardContent.animate({ height: contentHeight + footerHeight }, 300);
-    $boardFooter.animate({ height: 0 }, 300, function() {
-      $(this).hide();
-    });
   }
 });

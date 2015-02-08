@@ -2,10 +2,7 @@ Template.checklistItem.events({
   'click .cli-checkbox': function (event, template) {
     ChecklistItems.update(new Meteor.Collection.ObjectID(this._id), {$set: {checked: ! this.checked}});
   },
-  'click .cli-name': function (event, template) {
-    template.$('.static-view').hide().siblings('.edit-view').show();
-    template.$('.edit-view textarea').val(event.target.textContent).select();
-  },
+  'click .cli-name': openEditView,
   'mousedown .edit-view .btn-save': function(event, template) {
     ChecklistItems.update(new Meteor.Collection.ObjectID(this._id),
       {$set: { name: template.$('.edit-view textarea').val().trim() }}

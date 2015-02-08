@@ -68,23 +68,8 @@ Template.list.rendered = function() {
 
 };
 
-var finishAddCard = function(event, template) {
-  var increment = 90;
-  var $listFooter = template.$('.list-footer');
-  var $listContent = template.$('.list-content');
-  var footerHeight = $listFooter.height();
-  var contentHeight = $listContent.height();
-  $listContent.animate({ height: contentHeight + increment }, 200);
-  $listFooter.animate({ height: footerHeight - increment }, 200, function() {
-    template.$('.list-footer .edit-view').hide().siblings('.static-view').show();
-  });
-};
-
 Template.list.events({
-  'click .list-caption .static-view span': function(event, template) {
-    template.$('.list-caption .static-view').hide().siblings('.edit-view').show();
-    template.$('.list-caption .edit-view textarea').val(event.target.textContent).select();
-  },
+  'click .list-caption .static-view span': openEditView,
   'blur .list-caption .edit-view textarea': finishEditName,
   'mousedown .list-caption .edit-view .btn-save': function(event, template) {
     var listId = new Meteor.Collection.ObjectID(this._id);
@@ -97,17 +82,10 @@ Template.list.events({
     var $listFooter = template.$('.list-footer');
     var $listContent = template.$('.list-content');
     if ($listFooter.find('.edit-view').is(':hidden')) {
-      var increment = 90;
-      var footerHeight = $listFooter.height();
-      var contentHeight  =  $listContent.height();
-      $listContent.animate({ height: contentHeight - increment }, 200);
-      $listFooter.animate({ height: footerHeight + increment}, 200, function() {
-        template.$('.list-footer .static-view').hide().siblings('.edit-view').show();
-        template.$('.list-footer .edit-view textarea').focus();
-      });
+      showFooterView($listFooter, $listContent, 90, true);
     }
   },
-  'click .list-footer .btn-cancel': finishAddCard,
+  'click .list-footer .btn-cancel': hideFooterView,
   'mousedown .list-footer .btn-save': function(event, template) {
     var _this = this;
     var newCard = template.find('.list-footer textarea');

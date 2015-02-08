@@ -5,7 +5,7 @@ Template.list.rendered = function() {
   var sListId = _this.data._id;
   var listId = new Meteor.Collection.ObjectID(sListId);
 
-  Meteor.subscribe('cards-by-listId', sListId, function() {
+  Meteor.subscribe('cards', { 'listId': listId }, function() {
     var data = function() {
       var clearifyId = function (doc) {
         doc._id = doc._id._str;

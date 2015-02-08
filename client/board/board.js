@@ -3,7 +3,7 @@ Lists = new Meteor.Collection('lists');
 Template.board.rendered = function() {
   var _this = this;
   var boardId = _this.data._id;
-  Meteor.subscribe('lists-by-boardId', boardId._str, function() {
+  Meteor.subscribe('lists', { 'boardId': boardId }, function() {
     var data = function() {
       var clearifyId = function (doc) {
         doc._id = doc._id._str;

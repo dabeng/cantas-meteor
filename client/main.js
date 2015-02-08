@@ -17,9 +17,6 @@ Router.map(function () {
     loadingTemplate: 'loading',
     waitOn: function () {
       return Meteor.subscribe('boards');
-    },
-    action: function () {
-      this.render('boardList');
     }
   });
 
@@ -29,10 +26,7 @@ Router.map(function () {
       return Boards.findOne({ _id: new Meteor.Collection.ObjectID(this.params._id) });
     },
     waitOn: function () {
-      return Meteor.subscribe('board-by-id', this.params._id);
-    },
-    action: function () {
-      this.render('board');
+      return Meteor.subscribe('boards', { _id: new Meteor.Collection.ObjectID(this.params._id) });
     }
   });
 
@@ -42,10 +36,7 @@ Router.map(function () {
       return Cards.findOne({ _id: new Meteor.Collection.ObjectID(this.params._id) });
     },
     waitOn: function () {
-      return Meteor.subscribe('card-by-id', this.params._id);
-    },
-    action: function () {
-      this.render('card');
+      return Meteor.subscribe('cards', { _id: new Meteor.Collection.ObjectID(this.params._id) });
     }
   });
 

@@ -3,38 +3,18 @@ Lists = new Meteor.Collection('lists');
 Cards = new Meteor.Collection('cards');
 ChecklistItems = new Meteor.Collection('checklistItems');
 
-Meteor.publish('boards', function () {
-  return Boards.find();
+Meteor.publish('boards', function (filter) {
+  return Boards.find(filter || {});
 });
 
-Meteor.publish('board-by-id', function (s_id) {
-  return Boards.find({ _id: new Meteor.Collection.ObjectID(s_id) });
+Meteor.publish('lists', function (filter) {
+  return Lists.find(filter || {});
 });
 
-Meteor.publish('lists', function () {
-  return Lists.find();
+Meteor.publish('cards', function (filter) {
+  return Cards.find(filter || {});
 });
 
-Meteor.publish('lists-by-boardId', function (s_id) {
-  return Lists.find({ boardId: new Meteor.Collection.ObjectID(s_id) });
-});
-
-Meteor.publish('list-by-id', function (s_id) {
-  return Lists.find({ _id: new Meteor.Collection.ObjectID(s_id) });
-});
-
-Meteor.publish('cards', function () {
-  return Cards.find();
-});
-
-Meteor.publish('cards-by-listId', function (s_id) {
-  return Cards.find({ listId: new Meteor.Collection.ObjectID(s_id) });
-});
-
-Meteor.publish('card-by-id', function (s_id) {
-  return Cards.find({ _id: new Meteor.Collection.ObjectID(s_id) });
-});
-
-Meteor.publish('checklistItems-by-cardId', function (s_id) {
-  return ChecklistItems.find({ cardId: new Meteor.Collection.ObjectID(s_id) });
+Meteor.publish('checklistItems', function (filter) {
+  return ChecklistItems.find(filter || {});
 });

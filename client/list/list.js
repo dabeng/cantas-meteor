@@ -29,7 +29,7 @@ Template.list.rendered = function() {
     var tmpl = function() {
       return Template.cardItem;
     };
-    _this.$('.list-content').html(Blaze.toHTML(Blaze.Each(data, tmpl)));
+    Blaze.render(Blaze.Each(data, tmpl), _this.$('.list-content')[0]);
   });
 
   var $sortableCard = $('.list-content').sortable({

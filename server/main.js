@@ -80,3 +80,24 @@ Meteor.publish('current-card-by-id', function (_id) {
 Meteor.publish('checklistItems-by-cardId', function (s_id) {
   return ChecklistItems.find({ cardId: new Meteor.Collection.ObjectID(s_id) });
 });
+
+Meteor.publish('checklistItems-monitor', function (filter) {
+  var _this = this;
+  var handle = ChecklistItems.find(filter || {}).observeChanges({
+    added: function (id, fields) {
+      _this.added('checklistItems', id, fields);
+    },
+    changed: function(id, fields) {
+      _this.changed('checklistItems', id, fields);
+    },
+    removed: function (id) {
+      _this.removed('checklistItems', id);
+    }
+  });
+
+  _this.ready();
+
+  _this.onStop(function () {
+    handle.stop();
+  });
+});

@@ -6,7 +6,7 @@ Template.card.rendered = function() {
 
   Meteor.subscribe('checklistItems-by-cardId', cardId._str, function() {
     var data = function() {
-      var clItems = ChecklistItems.find({ cardId: cardId });
+      var clItems = ChecklistItems.find({ cardId: cardId }, { reactive: false });
       var clearifyId = function (doc) {
         doc._id = doc._id._str;
         return doc;
@@ -15,7 +15,7 @@ Template.card.rendered = function() {
       var newClItems = clItems.map(clearifyId);
       if (_this.data.cli_order) {
         var clItemIds = _this.data.cli_order.split(',');
-        var finalClItems = new Array(clItemIds.length);
+        var finalClItems = [];
         newClItems.forEach(function(item) {
             finalClItems[$.inArray(item._id, clItemIds)] = item;
         });

@@ -1,4 +1,21 @@
 
+
+Template.checklistItem.rendered = function() {
+  var _this = this;
+  var sChecklistItemId = _this.data._id;
+  var checklistItemId = new Meteor.Collection.ObjectID(sChecklistItemId);
+
+  Tracker.autorun(function (computation) {
+    Meteor.subscribe('checklistItems-monitor', {_id: checklistItemId });
+    
+    if (!computation.firstRun) {
+      var cli = checklistItems.findOne(checklistItemId);
+    }
+  });
+
+};
+
+
 var finishEditCLI = function(event, template) {
   $(event.target).closest('.editable-region')
     .find('.edit-view').hide()

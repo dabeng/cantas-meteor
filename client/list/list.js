@@ -12,16 +12,24 @@ Template.list.rendered = function() {
         return doc;
       };
       // we just wanna re-render cards when list's card_order changed rather than card's listId changed
-      Deps.nonreactive(function () {
-        newCards = Cards.find({ listId: listId }).map(clearifyId);
-      });
+      // Deps.nonreactive(function () {
+       var newCards = Cards.find({ listId: listId }).map(clearifyId);
+      // });
 
       var list = Lists.findOne({ _id: listId });
       if (list.card_order) {
         var cardIds = list.card_order.split(',');
         var finalCards = [];
         newCards.forEach(function(item) {
-          finalCards[$.inArray(item._id, cardIds)] = item;
+          var index = $.inArray(item._id, cardIds);
+          if (index > -1) {
+            finalCards[index] = item;
+          }
+        });
+        finalCards.forEach(function(item, i) {
+          if (item === null) {
+            finalCards.splice(i, 1);
+          }
         });
         return finalCards;
       } else {

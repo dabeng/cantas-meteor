@@ -6,23 +6,9 @@ Template.card.rendered = function() {
 
   Meteor.subscribe('checklistItems', {'cardId': cardId}, function() {
     var data = function() {
-      var clearifyId = function (doc) {
-        doc._id = doc._id._str;
-        return doc;
-      }
-      // remove the string "ObjectId()" to simplify _id
-      var newClItems = ChecklistItems.find({ cardId: cardId }).map(clearifyId);
+      var clItems = ChecklistItems.find({ cardId: cardId });
       var card = Cards.findOne({ _id: cardId });
-      if (card.cli_order) {
-        var clItemIds = card.cli_order.split(',');
-        var finalClItems = [];
-        newClItems.forEach(function(item) {
-          finalClItems[$.inArray(item._id, clItemIds)] = item;
-        });
-        return finalClItems;
-      } else {
-        return newClItems;
-      }
+      return refreshDatasource(clItems, card.cli_order);
     };
     var tmpl = function() {return Template.checklistItem; };
     Blaze.render(Blaze.Each(data, tmpl), _this.$('.checklist')[0]);

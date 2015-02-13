@@ -28,7 +28,7 @@ Template.list.rendered = function() {
         return newCards;
       }
     };
-    var tmpl = function() { return Template.cardItem;};
+    var tmpl = function() { return Template.cardItem; };
     Blaze.render(Blaze.Each(data, tmpl), _this.$('.list-content')[0]);
   });
 

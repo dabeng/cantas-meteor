@@ -5,22 +5,9 @@ Template.board.rendered = function() {
   var boardId = _this.data._id;
   Meteor.subscribe('lists', { 'boardId': boardId }, function() {
     var data = function() {
-      var clearifyId = function (doc) {
-        doc._id = doc._id._str;
-        return doc;
-      };
-      var newLists = Lists.find({ boardId: boardId }).map(clearifyId);
+      var lists = Lists.find({ boardId: boardId });
       var board = Boards.findOne({ _id: boardId });
-      if (board.list_order) {
-        var listIds = board.list_order.split(',');
-        var finalLists = [];
-        newLists.forEach(function(item) {
-          finalLists[$.inArray(item._id, listIds)] = item;
-        });
-        return finalLists;
-      } else {
-        return newLists;
-      }
+      return refreshDatasource(lists, board.list_order);
     };
     var tmpl = function() {return Template.list; };
     Blaze.render(Blaze.Each(data, tmpl), _this.$('#board-content')[0]);

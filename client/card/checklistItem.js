@@ -9,7 +9,7 @@ Template.checklistItem.rendered = function() {
     Meteor.subscribe('checklistItems-monitor', {_id: checklistItemId });
     
     if (!computation.firstRun) {
-      var cli = checklistItems.findOne(checklistItemId);
+      var cli = ChecklistItems.findOne(checklistItemId);
     }
   });
 

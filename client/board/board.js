@@ -41,9 +41,8 @@ Template.board.rendered = function() {
 
 
   Tracker.autorun(function (computation) {
-    var handle = Meteor.subscribe('current-board-by-id', boardId);
-    var currentBoard = Boards.findOne(boardId);
-
+    // we are only interested in drag$drop list
+    var currentBoard = Boards.findOne(boardId, { fields: { list_order: 1, moved_list_id: 1 } });
     if (!computation.firstRun && currentBoard) {
       var moved_list_id = currentBoard.moved_list_id;
       var $moved_list = $('#' + moved_list_id);
@@ -61,7 +60,7 @@ Template.board.rendered = function() {
         else {
           var data = Lists.findOne({_id : new Meteor.Collection.ObjectID(moved_list_id)});
           data._id = data._id._str;
-          $sortableList.append(Blaze.toHTMLWithData(Template.list, data));
+          Blaze.renderWithData(Template.list, data, $('#board-content')[0]);
       }
     }
 

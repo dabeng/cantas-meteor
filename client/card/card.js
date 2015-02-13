@@ -6,7 +6,7 @@ Template.card.rendered = function() {
 
   Meteor.subscribe('checklistItems-by-cardId', cardId._str, function() {
     var data = function() {
-      var clItems = ChecklistItems.find({ cardId: cardId }, { reactive: false });
+      var clItems = ChecklistItems.find({ cardId: cardId });
       var clearifyId = function (doc) {
         doc._id = doc._id._str;
         return doc;

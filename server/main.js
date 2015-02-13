@@ -12,16 +12,19 @@ Meteor.publish('board-by-id', function (s_id) {
   return Boards.find({ _id: new Meteor.Collection.ObjectID(s_id) });
 });
 
-Meteor.publish('current-board-by-id', function (_id) {
+Meteor.publish('boards-monitor', function (filter) {
   var _this = this;
 
-  Boards.find({ _id: _id }).observeChanges({
+  var handle = Boards.find( filter || {}).observeChanges({
     changed: function (id, fields) {
-      if(fields.list_order) {
-        _this.changed('boards', _id, { list_order: fields.list_order, moved_list_id: fields.moved_list_id });
-
-      }
+        _this.changed('boards', id, fields);
     }
+  });
+
+  _this.ready();
+
+  _this.onStop(function () {
+    handle.stop();
   });
 
 });
@@ -79,25 +82,4 @@ Meteor.publish('current-card-by-id', function (_id) {
 
 Meteor.publish('checklistItems-by-cardId', function (s_id) {
   return ChecklistItems.find({ cardId: new Meteor.Collection.ObjectID(s_id) });
-});
-
-Meteor.publish('checklistItems-monitor', function (filter) {
-  var _this = this;
-  var handle = ChecklistItems.find(filter || {}).observeChanges({
-    added: function (id, fields) {
-      _this.added('checklistItems', id, fields);
-    },
-    changed: function(id, fields) {
-      _this.changed('checklistItems', id, fields);
-    },
-    removed: function (id) {
-      _this.removed('checklistItems', id);
-    }
-  });
-
-  _this.ready();
-
-  _this.onStop(function () {
-    handle.stop();
-  });
 });

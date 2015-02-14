@@ -6,7 +6,7 @@ Template.board.rendered = function() {
   Meteor.subscribe('lists', { 'boardId': boardId }, function() {
     var data = function() {
       var lists = Lists.find({ boardId: boardId });
-      var board = Boards.findOne({ _id: boardId });
+      var board = Boards.findOne({ _id: boardId }, { fields: { list_order: 1 }});
       return refreshDatasource(lists, board.list_order);
     };
     var tmpl = function() {return Template.list; };

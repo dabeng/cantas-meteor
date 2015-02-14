@@ -7,7 +7,7 @@ Template.card.rendered = function() {
   Meteor.subscribe('checklistItems', {'cardId': cardId}, function() {
     var data = function() {
       var clItems = ChecklistItems.find({ cardId: cardId });
-      var card = Cards.findOne({ _id: cardId });
+      var card = Cards.findOne({ _id: cardId }, { fields: {cli_order: 1 }});
       return refreshDatasource(clItems, card.cli_order);
     };
     var tmpl = function() {return Template.checklistItem; };

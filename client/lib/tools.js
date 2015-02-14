@@ -8,8 +8,16 @@ refreshDatasource = function(cursor, order) {
         var aId = order.split(',');
         var orderedEntities = [];
         entities.forEach(function(item) {
-          orderedEntities[$.inArray(item._id, aId)] = item;
+          var index = $.inArray(item._id, aId);
+          if (index > -1) {
+            orderedEntities[index] = item;
+          }
         });
+        for (var i=0; i < orderedEntities.length; i++) {
+          if (orderedEntities[i] === undefined) {
+            orderedEntities.splice(i, 1);
+          }
+        }
 
         return orderedEntities;
       } else {

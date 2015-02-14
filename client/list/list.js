@@ -7,34 +7,10 @@ Template.list.rendered = function() {
 
   Meteor.subscribe('cards', { 'listId': listId }, function() {
     var data = function() {
-      var clearifyId = function (doc) {
-        doc._id = doc._id._str;
-        return doc;
-      };
-      // we just wanna re-render cards when list's card_order changed rather than card's listId changed
-      // Deps.nonreactive(function () {
-       var newCards = Cards.find({ listId: listId }).map(clearifyId);
-      // });
-
-      var list = Lists.findOne({ _id: listId });
-      if (list.card_order) {
-        var cardIds = list.card_order.split(',');
-        var finalCards = [];
-        newCards.forEach(function(item) {
-          var index = $.inArray(item._id, cardIds);
-          if (index > -1) {
-            finalCards[index] = item;
-          }
-        });
-        finalCards.forEach(function(item, i) {
-          if (item === null) {
-            finalCards.splice(i, 1);
-          }
-        });
-        return finalCards;
-      } else {
-        return newCards;
-      }
+       var cards = Cards.find({ listId: listId });
+      // using field selector to avoid rerendering the cards  when user changed list's name
+      var list = Lists.findOne({ _id: listId },  { fields: {card_order: 1 }});
+      return refreshDatasource(cards, list.card_order);
     };
     var tmpl = function() { return Template.cardItem; };
     Blaze.render(Blaze.Each(data, tmpl), _this.$('.list-content')[0]);
@@ -57,13 +33,13 @@ Template.list.rendered = function() {
         var cardId = new Meteor.Collection.ObjectID(sCardId);
         var begin_card_order = $beginList.find('.list-content').sortable('toArray').join(',');
         var beginListId = new Meteor.Collection.ObjectID($beginList[0].id);
-        Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) }}, function() {
-          /* The following line is very important, it's used to avoid this error --
-          Exception from Tracker recompute function: Error: Failed to execute 'insertBefore' on 'Node':
-          The node before which the new node is to be inserted is not a child of this node. */
-          $('#' + sCardId).remove();
-          Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }}, function() {
-            Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }});
+        Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }}, function() {
+          Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }}, function() {
+            /* The following line is very important, it's used to avoid this error --
+              Exception from Tracker recompute function: Error: Failed to execute 'insertBefore' on 'Node':
+              The node before which the new node is to be inserted is not a child of this node. */
+            $('#' + sCardId).remove();
+            Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) }});
           });
         });
       }

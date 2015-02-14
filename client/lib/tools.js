@@ -18,7 +18,6 @@ refreshDatasource = function(cursor, order) {
             orderedEntities.splice(i, 1);
           }
         }
-
         return orderedEntities;
       } else {
         return entities;

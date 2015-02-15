@@ -345,6 +345,8 @@ html,body {
   display: inline-block;
   color: black;
   text-decoration: none;
+  white-space: normal;
+  overflow: hidden;
 }
 
 .card-item:hover a{

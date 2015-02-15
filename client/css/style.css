@@ -351,6 +351,7 @@ html,body {
 
 .card-item:hover a{
   color: black;
+  text-decoration: none;
 }
 
 #card-wrapper {

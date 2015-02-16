@@ -7,9 +7,8 @@ Template.list.rendered = function() {
 
   Meteor.subscribe('cards', { 'listId': listId }, function() {
     var data = function() {
-       var cards = Cards.find({ listId: listId });
-      // using field selector to avoid rerendering the cards  when user changed list's name
-      var list = Lists.findOne({ _id: listId },  { fields: {card_order: 1 }});
+      var cards = Cards.find({ listId: listId }, { reactive: false });
+      var list = Lists.findOne({ _id: listId }, { reactive: false });
       return refreshDatasource(cards, list.card_order);
     };
     var tmpl = function() { return Template.cardItem; };
@@ -35,10 +34,6 @@ Template.list.rendered = function() {
         var beginListId = new Meteor.Collection.ObjectID($beginList[0].id);
         Lists.update(endListId, { $set: {card_order: end_card_order, moved_card_id: ui.item[0].id }}, function() {
           Lists.update(beginListId, { $set: {card_order: begin_card_order, moved_card_id: ui.item[0].id }}, function() {
-            /* The following line is very important, it's used to avoid this error --
-              Exception from Tracker recompute function: Error: Failed to execute 'insertBefore' on 'Node':
-              The node before which the new node is to be inserted is not a child of this node. */
-            $('#' + sCardId).remove();
             Cards.update(cardId, { $set: { listId: new Meteor.Collection.ObjectID($endList[0].id) }});
           });
         });
@@ -46,6 +41,42 @@ Template.list.rendered = function() {
     }
   })
   .disableSelection();
+
+  Tracker.autorun(function (c) {
+    var currentList = Lists.findOne(listId);
+    if (!c.firstRun) {
+      var moved_card_id = currentList.moved_card_id;
+      var $moved_card = $('#' + moved_card_id);
+      // moved-card is existing card
+      if ($moved_card.length) {
+        var $cardItems = $('#' + sListId).find('.card-item');
+        var original_index = $cardItems.index($moved_card);
+        var target_index = $.inArray(moved_card_id, currentList.card_order.split(','));
+        // moved-card is being dragged/dropped  in the same list
+        if (target_index !== -1 && original_index > -1) {
+          if (original_index < target_index) {
+            $moved_card.insertAfter($cardItems.eq(target_index));
+          } else if (original_index > target_index) {
+            $moved_card.insertBefore($cardItems.eq(target_index));
+          }
+        } // moved-card is being dragged/dropped  into the other list 
+        else if (target_index !== -1 && original_index === -1) {
+          if (target_index === 0) {
+            $('#' + sListId).find('.list-content').prepend($moved_card);
+          } else if (target_index === $cardItems.length) {
+            $('#' + sListId).find('.list-content').append($moved_card);
+          } else {
+            $moved_card.insertBefore($cardItems.eq(target_index));
+          }
+        }
+      } // moved-card is newly added card
+      else {
+        var data = Cards.findOne({_id : new Meteor.Collection.ObjectID(moved_card_id)});
+        data._id = data._id._str;
+        $('#' + sListId).find('.list-content').append(Blaze.toHTMLWithData(Template.cardItem, data));
+      }
+    }
+  });
 
 };
 

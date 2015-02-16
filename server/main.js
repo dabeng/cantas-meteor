@@ -11,6 +11,19 @@ Meteor.publish('lists', function (filter) {
   return Lists.find(filter || {});
 });
 
+Meteor.publish('lists-monitor', function (_id) {
+  var _this = this;
+
+  Lists.find(filter || {}).observeChanges({
+    changed: function (id, fields) {
+      if (fields.hasOwnProperty('card_order')) {
+        _this.changed('lists', id, fields);
+      }
+    }
+  });
+
+});
+
 Meteor.publish('cards', function (filter) {
   return Cards.find(filter || {});
 });

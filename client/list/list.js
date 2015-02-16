@@ -1,9 +1,7 @@
 Cards = new Meteor.Collection('cards');
 
 Template.list.rendered = function() {
-  var _this = this;
-  var sListId = _this.data._id;
-  var listId = new Meteor.Collection.ObjectID(sListId);
+  var _this = this, sListId = _this.data._id, listId = new Meteor.Collection.ObjectID(sListId);
 
   Meteor.subscribe('cards', { 'listId': listId }, function() {
     var data = function() {
@@ -39,14 +37,12 @@ Template.list.rendered = function() {
         });
       }
     }
-  })
-  .disableSelection();
+  }).disableSelection();
 
   Tracker.autorun(function (c) {
     var currentList = Lists.findOne(listId);
     if (!c.firstRun) {
-      var moved_card_id = currentList.moved_card_id;
-      var $moved_card = $('#' + moved_card_id);
+      var moved_card_id = currentList.moved_card_id, $moved_card = $('#' + moved_card_id);
       // moved-card is existing card
       if ($moved_card.length) {
         var $cardItems = $('#' + sListId).find('.card-item');
@@ -73,7 +69,15 @@ Template.list.rendered = function() {
       else {
         var data = Cards.findOne({_id : new Meteor.Collection.ObjectID(moved_card_id)});
         data._id = data._id._str;
-        $('#' + sListId).find('.list-content').append(Blaze.toHTMLWithData(Template.cardItem, data));
+        Blaze.renderWithData(Template.cardItem, data, $('#' + sListId).find('.list-content')[0]);
+      }
+    }
+  });
+
+  Cards.find({ listId: listId }).observeChanges({
+    changed: function(id, fields) {
+      if (fields.hasOwnProperty('name')) {
+        $('#' + id).find('.card-name').text(fields.name);
       }
     }
   });
@@ -91,16 +95,14 @@ Template.list.events({
     if ($('.list-footer .edit-view').filter(':visible').length) {
       $('.list-footer .btn-cancel').click();
     }
-    var $listFooter = template.$('.list-footer');
-    var $listContent = template.$('.list-content');
+    var $listFooter = template.$('.list-footer'), $listContent = template.$('.list-content');
     if ($listFooter.find('.edit-view').is(':hidden')) {
       showFooterView($listFooter, $listContent, 90, true);
     }
   },
   'click .list-footer .btn-cancel': hideFooterView,
   'mousedown .list-footer .btn-save': function(event, template) {
-    var _this = this;
-    var newCard = template.find('.list-footer textarea');
+    var _this = this, newCard = template.find('.list-footer textarea');
     if (newCard.value.trim().length) {
       var listId = new Meteor.Collection.ObjectID(this._id);
       Cards.insert({
@@ -109,13 +111,9 @@ Template.list.events({
         listId: listId,
         boardId: this.boardId
       }, function(error, _id) {
-        if (error) {
-          // TODO: exception handling
-        } else {
-          var list = Lists.findOne({ _id: listId });
-          var new_card_order = !!(list.card_order) ? list.card_order + ',' +_id._str : _id._str;
-          Lists.update(listId, { $set: {card_order: new_card_order, moved_card_id: _id._str }});
-        }
+        var list = Lists.findOne({ _id: listId });
+        var new_card_order = !!(list.card_order) ? list.card_order + ',' +_id._str : _id._str;
+        Lists.update(listId, { $set: {card_order: new_card_order, moved_card_id: _id._str }});
       });
       newCard.value = '';
     }

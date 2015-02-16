@@ -1,27 +1,26 @@
 refreshDatasource = function(cursor, order) {
-      var clearifyId = function (doc) {
-        doc._id = doc._id._str;
-        return doc;
+  var clearifyId = function (doc) {
+    doc._id = doc._id._str;
+    return doc;
+  };
+  var docs = cursor.map(clearifyId);
+  if (order) {
+    var Ids = order.split(','), orderedDocs = [];
+    docs.forEach(function(item) {
+      var index = $.inArray(item._id, Ids);
+      if (index > -1) {
+        orderedDocs[index] = item;
       }
-      var entities = cursor.map(clearifyId);
-      if (order) {
-        var aId = order.split(',');
-        var orderedEntities = [];
-        entities.forEach(function(item) {
-          var index = $.inArray(item._id, aId);
-          if (index > -1) {
-            orderedEntities[index] = item;
-          }
-        });
-        for (var i=0; i < orderedEntities.length; i++) {
-          if (orderedEntities[i] === undefined) {
-            orderedEntities.splice(i, 1);
-          }
-        }
-        return orderedEntities;
-      } else {
-        return entities;
+    });
+    for (var i=0; i < orderedDocs.length; i++) {
+      if (orderedDocs[i] === undefined) {
+        orderedDocs.splice(i, 1);
       }
+    }
+    return orderedDocs;
+  } else {
+    return docs;
+  }
 };
 
 showEditCaptionView = function (event, template) {

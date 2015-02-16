@@ -1,8 +1,8 @@
 Lists = new Meteor.Collection('lists');
 
 Template.board.rendered = function() {
-  var _this = this;
-  var boardId = _this.data._id;
+  var _this = this, boardId = _this.data._id;
+
   Meteor.subscribe('lists', { 'boardId': boardId }, function() {
     var data = function() {
       var lists = Lists.find({ boardId: boardId });
@@ -23,8 +23,7 @@ Template.board.rendered = function() {
       var list_order = $sortableList.sortable('toArray').join(',');
       Boards.update(boardId, { $set: {list_order: list_order, moved_list_id: sListId }});
     }
-  })
-  .disableSelection();
+  }).disableSelection();
 
 };
 
@@ -37,8 +36,7 @@ Template.board.events({
   },
   'blur #board-caption .edit-view textarea': hideEditCaptionView,
   'click #add-list-option': function (event, template) {
-    var $boardFooter = $('#board-footer');
-    var $boardContent = $('#board-content');
+    var $boardFooter = $('#board-footer'), $boardContent = $('#board-content');
     if ($boardFooter.is(':hidden')) {
       if (!$('#ta-addList').length) {
         Blaze.renderWithData(Template.addList, {boardId: this._id}, $boardFooter[0]);

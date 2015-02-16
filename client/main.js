@@ -19,21 +19,21 @@ Router.map(function () {
 
   this.route('board', {
     path: '/board/:_id',
-    data: function () { return Boards.findOne({ _id: new Meteor.Collection.ObjectID(this.params._id) }); },
-    waitOn: function () { return Meteor.subscribe('boards', { _id: new Meteor.Collection.ObjectID(this.params._id) }); }
+    data: function () { return Boards.findOne({ _id: createObjectID(this.params._id) }); },
+    waitOn: function () { return Meteor.subscribe('boards', { _id: createObjectID(this.params._id) }); }
   });
 
   this.route('card', {
     path: '/card/:_id',
-    data: function () { return Cards.findOne({ _id: new Meteor.Collection.ObjectID(this.params._id) }); },
-    waitOn: function () { return Meteor.subscribe('cards', { _id: new Meteor.Collection.ObjectID(this.params._id) }); }
+    data: function () { return Cards.findOne({ _id: createObjectID(this.params._id) }); },
+    waitOn: function () { return Meteor.subscribe('cards', { _id: createObjectID(this.params._id) }); }
   });
 
 });
 
 Router.route('/new/board', function () {
   var _this = this;
-  Boards.insert({ name: 'One Board', _id: new Meteor.Collection.ObjectID() }, function(error, _id) {
+  Boards.insert({ name: 'One Board', _id: createObjectID() }, function(error, _id) {
     _this.redirect('/board/' + _id._str);
   });
 });

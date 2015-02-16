@@ -5,8 +5,7 @@ Template.checklistItem.events({
   'click .cli-name': showEditCaptionView,
   'mousedown .edit-view .btn-save': function(event, template) {
     ChecklistItems.update(new Meteor.Collection.ObjectID(this._id),
-      {$set: { name: template.$('.edit-view textarea').val().trim() }}
-    );
+      {$set: { name: template.$('.edit-view textarea').val().trim() }});
   },
   'blur .edit-view textarea': hideEditCaptionView,
   'click .cli-delete': function (event, template) {

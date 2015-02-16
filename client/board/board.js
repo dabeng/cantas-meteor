@@ -30,9 +30,7 @@ Template.board.rendered = function() {
 Template.board.events({
   'click #board-caption .static-view span': showEditCaptionView,
   'mousedown #board-caption .edit-view .btn-save': function(event, template) {
-    Boards.update(this._id, {
-      $set: { name: template.$('#board-caption .edit-view textarea').val().trim() }
-    });
+    Boards.update(this._id, {$set: { name: template.$('#board-caption .edit-view textarea').val().trim() }});
   },
   'blur #board-caption .edit-view textarea': hideEditCaptionView,
   'click #add-list-option': function (event, template) {

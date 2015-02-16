@@ -58,3 +58,5 @@ hideFooterView = function (event, template) {
     }
   });
 };
+
+createObjectID = function(sId) { return new Meteor.Collection.ObjectID(sId); };

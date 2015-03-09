@@ -1,0 +1,330 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Meteor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <link rel="stylesheet" type="text/css" href="css/demo.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/custom.css">
+</head>
+<body>        
+  <div class="container demo-2">
+    <div id="slider" class="sl-slider-wrapper">
+      <div class="sl-slider">
+        <div class="sl-slide first-slide" data-orientation="horizontal" data-slice1-rotation="-25" data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-1"></div>
+            <h2 class="primary-subject">Meteor</h2>
+            <blockquote>
+              <a href="https://github.com/dabeng" target="blank"><cite>dabeng</cite></a>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="30" data-slice2-rotation="-15" data-slice1-scale="1.5" data-slice2-scale="1.5">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-2"></div>
+            <h2 class="subject">Why Fast</h2>
+            <blockquote>
+              <ul>
+                <li>simple routing -- Iron Router</li>
+                <li>powerful template -- Spacebars + Blaze</li>
+                <li>efficient communication -- Publications and Subscriptions</li>
+                <li>concise file structure -- obscure the diffrences between front-end $ back-end</li>
+              </ul>
+            </blockquote>
+            </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="30" data-slice2-rotation="-35" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-3"></div>
+            <h2 class="subject">How to Reactivity</h2>
+            <blockquote>
+              <ul>
+               <li>Database Everywhere (Minimongo)</li>
+               <li>Latency Compensation</li>
+               <li>Reactive Programming (computation + datasource)</li>
+              </ul>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-45" data-slice2-rotation="25" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-4"></div>
+            <h2 class="subject">Minimongo</h2>
+            <blockquote><p>The human body has no more need for cows' milk than it does for dogs' milk, horses' milk, or giraffes' milk.</p></blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-5"></div>
+            <h2 class="subject">Publish & Subscribe</h2>
+            <blockquote class="highlight-bg"><p>Meteor servers can publish sets of documents, and clients can subscribe to those publications. Any documents the client subscribes to will be available through the find method of client collections.</p></blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-6"></div>
+            <h2 class="subject">Reactive Computation</h2>
+            <blockquote class="highlight-bg">
+              <p>These Meteor functions run your code as a reactive computation:</p>
+              <ul>
+                <li>Templates</li>
+                <li>Tracker.autorun</li>
+                <li>Blaze.render and Blaze.renderWithData</li>
+              </ul>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-7"></div>
+            <h2 class="subject">Reactive Datasource</h2>
+            <blockquote>
+              <p>The reactive data sources that can trigger changes are:</p>
+                <ul>
+                  <li>Database queries on Collections</li>
+                  <li>Session variables</li>
+                  <li>Meteor.status</li>
+                  <li>Meteor.user</li>
+              </ul>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-8"></div>
+            <h2 class="subject">Fine-Grained Reactivity</h2>
+            <blockquote>
+              <ul>
+               <li>Property Selectors - Posts.find({ tag: 'jquery' }).fetch();</li>
+               <li>Field Selectors - Posts.find({}, {fields: {author: 1,title: 0}}).fetch();</li>
+               <li>Collection.cursor.count() - Posts.find({ tags: 'jquery' }).count()</li>
+              </ul>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-9"></div>
+            <h2 class="subject highlight-text" style="padding-top: 50px; font-size: 86px;">Property Selectors</h2>
+            <blockquote class="highlight-bg">
+              <pre>
+Deps.autorun(function(){
+  var allPosts = Posts.find().fetch();
+  for (var post in allPosts) {
+    if (post.tag === "jquery") console.log(post.title);
+  }
+});
+-----------------------------------
+Deps.autorun(function(){
+  var postsAboutKittens = Posts.find({tag:"jquery"}).fetch();
+  postsAboutKittens.forEach(function (post) {
+    console.log(post.title);
+  });
+});
+              </pre>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-10"></div>
+            <h2 class="subject highlight-text">Field Selectors</h2>
+            <blockquote class="highlight-bg">
+              <pre>
+Deps.autorun(function(){
+  Posts.find({}, {fields: {author: 1, title: 0).fetch()
+    .forEach(function (post) {
+      console.log(post.author);
+    });
+});
+              </pre>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-11"></div>
+            <h2 class="subject">Collection.cursor.count()</h2>
+            <blockquote class="highlight-bg">
+              <pre>
+Deps.autorun(function(){
+  console.log(Posts.find({ tags: 'jquery' }).fetch().length);
+});
+
+-----------------------------------------
+
+Deps.autorun(function(){
+  console.log(Posts.find({ tags: 'jquery' }).count());
+});
+              </pre></blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-12"></div>
+            <h2 class="subject" style="padding-top: 30px; font-size: 72px;">Ignoring Changes to Certain Reactive Values</h2>
+            <blockquote class="highlight-bg">
+              <pre>
+var game = new ReactiveDict;
+game.set("score", 42);
+game.set("umpire", "Giraffe");
+
+Deps.autorun(function () {
+  Deps.nonreactive(function () {
+    console.log("current umpire is " + game.get("umpire"));
+  });
+  console.log("current score is " + game.get("score") + "!");
+});
+              </pre>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-13"></div>
+            <h2 class="subject highlight-text" style="padding-top: 50px;">Nested Autoruns</h2>
+            <blockquote class="highlight-bg">
+              <pre>
+var weather = new ReactiveDict;
+
+weather.set("sky", "sunny");
+weather.set("temp", "cool");
+
+var weatherPrinter = Deps.autorun(function () {
+  console.log("The sky is " + weather.get("sky"));
+  var temperaturePrinter = Deps.autorun(function () {
+    console.log("The temperature is " + weather.get("temp"));
+  });
+});
+              </pre>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-14"></div>
+            <h2 class="subject" style="font-size: 72px;padding-bottom: 50px;">Guidelines for Limiting Reactivity</h2>
+            <blockquote class="highlight-bg">
+              <ul>
+                <li>When fine-grained ≈ coarse-grained, prefer fine-grained.</li>
+                <li>If you discover that a reactive computaion reruns too often, maybe it depends on data it doesn't actually use.</li>
+                <li>As long as final interface is right, we can ignore intermediate reruns.</li>
+              </ul>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-15"></div>
+            <h2 class="subject" style="font-size: 86px;">Providers of reactive values</h2>
+            <blockquote class="highlight-bg">
+              <p>
+                 In the sample code, we the ReactiveDict library. A real app will use a variety of libraries that provide reactive values, like a database library that lets you do arbitrary reactive database queries (such as Meteor's Minimongo, which provides a reactive implementation of the entire MongoDB query API), or simple libraries that provide the current time or window size as a reactive value.
+              </p>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-16"></div>
+            <h2 class="subject" style="font-size: 86px;">Consumers of reactive values</h2>
+            <blockquote>
+              <p>
+                From a simple autorun that uses jQuery to update a DOM element to the advanced reactive templating libraries like Meteor Blaze.
+              </p>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-17"></div>
+            <h2 class="subject">Reactive Programming</h2>
+            <div id="rp-chart">
+              <div class="rectangle highlight-bg">
+                <p class="heading">Database<p>
+                  <p class="content">provides reactivity</p>
+              </div><hr/>
+              <div class="rectangle highlight-bg">
+                <p class="heading">Application Code<p>
+                  <p class="content">transparently reactive(doesn'
+                    t need to know about reactivity)</p>
+              </div><hr/>
+              <div class="rectangle highlight-bg">
+                <p class="heading">Front-end Library<p>
+                  <p class="content">consumes reactivity</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-18"></div>
+            <h2 class="subject">Unmentioned Parts</h2>
+            <blockquote>
+              <ul>
+                <li>Session, Accounts, Passwords</li>
+                <li>Building Mobile Apps: Once you've built your web app with Meteor, you can easily build a native wrapper for your app and publish it to the Google Play Store or iOS App Store with just a few commands. You don't have to worry about the edge cases associated with mobile app development.</li>
+              </ul>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-19"></div>
+            <h2 class="subject">Aspects to Investigate</h2>
+            <blockquote class="highlight-bg" style="font-size: 54px;">
+              <p>How to modularize and manage dependencies?</p>
+              <p>How to unit testing?</p>
+              <p>Is it applicable ot building app of large data?</p>
+              <p>Can we use it only on front-end side?</p>
+            </blockquote>
+          </div>
+        </div>
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-50" data-slice2-rotation="20" data-slice1-scale="2" data-slice2-scale="1">
+          <div class="sl-slide-inner">
+            <div class="bg-img bg-img-20"></div>
+            <h2 class="subject highlight-text">Further Reading</h2>
+            <blockquote class="highlight-bg" style="width: 70%; font-size: 64px; margin-top: 10px;">
+              <ul>
+                <li><a href="http://manual.meteor.com/">The Meteor Manual</a></li>
+                <li><a href="https://atmospherejs.com/">Atmosphere</a></li>
+                <li><a href="https://meteorhacks.com/">Meteor Hacks</a></li>
+                <li><a href="https://www.discovermeteor.com/blog">DISCOVER METEOR</a></li>
+              </ul>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+      <nav id="nav-dots" class="nav-dots">
+        <span class="nav-dot-current"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </nav>
+    </div>
+  </div>
+  <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+  <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery.ba-cond.min.js"></script>
+  <script type="text/javascript" src="js/jquery.slitslider.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

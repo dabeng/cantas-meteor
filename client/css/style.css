@@ -14,42 +14,21 @@ html,body {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #1A1021;
+  background-image: url('img/background.jpg');
 }
 
 .heading {
   color: white;
-  background-color: rgba(168, 120, 120, 0.3);
-}
-
-.header-wrapper {
-  position: absolute;
-  top: 5px;
-  right: 20px;
-  left: 20px;
-  height: 100px;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .header-wrapper .heading {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  height: 60px;
-  text-align: center;
-  line-height: 60px;
+  padding: 10px 20px;
   color: white;
-  font-size: 40px;
+  font-size: 24px;
   font-weight: bold;
 }
 
-.nav-wrapper {
-  position: absolute;
-  top: 60px;
-  right: 0px;
-  left: 0px;
-  bottom: 0px;
-}
 #nav {
   list-style: none;
   height: 30px;
@@ -65,7 +44,7 @@ html,body {
   width: 150px;
   height: 30px;
   color: white;
-  background-color: rgba(168, 120, 120, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .nav-item:hover {
   background-color: rgba(255, 255, 255, 0.3);
@@ -89,11 +68,12 @@ html,body {
 
 .content-wrapper {
   position: absolute;
-  top: 105px;
+  top: 100px;
   right: 20px;
   bottom: 20px;
   left: 20px;
-  background-color: white;
+  border: 1px dashed #ccc;
+  border-radius: 10px;
 }
 
 .loading {
@@ -125,12 +105,11 @@ html,body {
   float: left;
   line-height: 200px;
   text-align: center;
-  background-color: rgba(227, 227, 227, 0.5);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .175);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .board-item a {
-  color: black;
+  color: #fff;
   font-weight: bold;
   width: 100%;
   height: 100%;
@@ -161,8 +140,7 @@ html,body {
 
 #board-caption {
   height: 40px;
-  border-bottom: 2px solid #90A830;
-  border-bottom-style: dashed;
+  border-bottom: 1px dashed #ccc;
 }
 
 #board-caption .static-view span:hover {
@@ -192,6 +170,8 @@ html,body {
 }
 
 #board-caption .static-view {
+  font-size: 16px;
+  color: #fff;
   padding: 5px;
   height: 100%;
   width: calc(100% - 140px);
@@ -240,7 +220,7 @@ html,body {
   /* this setting is very important. Without it, lists will bounce when dragging lists. */
   vertical-align: top;
   margin-right: 10px;
-  background-color: rgba(227, 227, 227, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .list-caption {
@@ -324,7 +304,8 @@ html,body {
   max-width: 280px;
   margin-left: 10px;
   margin-bottom: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #fff;
+  border-radius: 5px;
 }
 
 .card-item:hover {

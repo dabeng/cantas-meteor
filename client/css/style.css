@@ -80,7 +80,7 @@ html,body {
   height: 100%;
   width: 100%;
   text-align: center;
-  color: #90A830;
+  color: #fff;
 }
 
 .content-wrapper .loading i {
@@ -125,7 +125,7 @@ html,body {
 }
 
 .board-item:hover {
-  background-color: rgba(255, 228, 90, 0.8);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .board-item:hover a {
@@ -200,8 +200,7 @@ html,body {
 
 #board-footer {
   display: none;
-  border-top: 2px solid #90A830;
-  border-top-style: dashed;
+  border-top: 1px dashed #aaa;
   padding: 10px 20px 10px 10px;
 }
 
@@ -210,7 +209,7 @@ html,body {
   height: 100%;
   display:inline-block;
   margin-right: 10px;
-  background-color: rgba(255, 228, 90, 0.8);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .list-item {
@@ -228,6 +227,7 @@ html,body {
 }
 
 .list-caption .static-view {
+  color: #fff;
   padding: 2px;
   height: 100%;
   width: 100%;
@@ -272,7 +272,7 @@ html,body {
 
 .list-footer .static-view span {
   float: right;
-  color: #90A830;
+  color: #fff;
   font-weight: bold;
 }
 
@@ -285,8 +285,7 @@ html,body {
   height: 100%;
   width: 100%;
   margin-top: 5px;
-  border-top: 2px solid #90A830;
-  border-top-style: dashed;
+  border-top: 1px solid #aaa;
 }
 
 .list-footer .edit-view  textarea{
@@ -305,7 +304,6 @@ html,body {
   margin-left: 10px;
   margin-bottom: 10px;
   background-color: #fff;
-  border-radius: 5px;
 }
 
 .card-item:hover {
@@ -317,7 +315,7 @@ html,body {
   max-width: 280px;
   margin-left: 10px;
   margin-bottom: 10px;
-  background-color: rgba(255, 228, 90, 0.8);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .card-abstract {
@@ -335,13 +333,11 @@ html,body {
 #card-wrapper {
   width: 100%;
   height: 100%;
-  background-color: white;
 }
 
 #card-caption {
   height: 40px;
-  border-bottom: 2px solid #90A830;
-  border-bottom-style: dashed;
+  border-bottom: 1px dashed #aaa;
 }
 
 #card-caption .static-view {
@@ -380,8 +376,8 @@ html,body {
 }
 
 .btn-default {
-  color: white;
-  background-color: #90A830;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 #card-menu .menu-caption {
@@ -393,7 +389,11 @@ html,body {
 }
 
 .dropdown-menu i {
-  color: #90A830;
+  color: #000;
+}
+
+.dropdown-menu > li > a:hover {
+  background-color: #ccc;
 }
 
 .dropdown-menu > li > a {
@@ -414,10 +414,10 @@ html,body {
 }
 
 .checklistItem {
+  color: #fff;
   margin-bottom: 10px;
-  background-color: rgba(227, 227, 227, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 5px 10px 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .175);
 }
 
 #card-content .ui-state-highlight {
@@ -429,7 +429,7 @@ html,body {
   height: 30px;
   width: 30px;
   float: left;
-  color: #90A830;
+  color: #fff;
   font-weight: bold;
   font-size: 18px;
   transition: font-size 0.3s;
@@ -454,7 +454,7 @@ html,body {
   margin-right: -10px;
   float: right;
   font-size: 18px;
-  color: #90A830;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -468,8 +468,7 @@ html,body {
 
 #card-footer {
   display: none;
-  border-top: 2px solid #90A830;
-  border-top-style: dashed;
+  border-top: 1px dashed #ccc;
   padding: 10px 20px 10px 10px;
 }
 
@@ -486,7 +485,7 @@ html,body {
   float: right;
   margin-top: -11px;
   margin-right: -20px;
-  color: #90A830;
+  color: #ccc;
   font-size: 20px;
 }
 
